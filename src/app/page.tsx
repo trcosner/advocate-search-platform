@@ -1,90 +1,60 @@
-"use client";
+import { Suspense } from "react";
+import { advocateService } from "./api/services/advocate";
+import { AdvocateSearchParams, DegreeType } from "../types/api";
+import AdvocateSearchClient from "./components/AdvocateSearchClient";
 
-import { useEffect, useState } from "react";
+interface PageProps {
+  searchParams: {
+    page?: string;
+    limit?: string;
+    query?: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+    degree?: string;
+    minExperience?: string;
+  };
+}
 
-export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+async function getAdvocates(searchParams: AdvocateSearchParams) {
+  try {
+    return await advocateService.search(searchParams);
+  } catch (error) {
+    console.error('Error fetching advocates on server:', error);
+    throw error;
+  }
+}
 
-  useEffect(() => {
-    console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
-      });
-    });
-  }, []);
+export default async function HomePage({ searchParams }: PageProps) {
+  // Validate degree parameter
+  const degreeParam = searchParams.degree;
+  const degree = degreeParam && Object.values(DegreeType).includes(degreeParam as DegreeType)
+    ? degreeParam as DegreeType
+    : undefined;
 
-  const onChange = (e) => {
-    const searchTerm = e.target.value;
-
-    document.getElementById("search-term").innerHTML = searchTerm;
-
-    console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
-      );
-    });
-
-    setFilteredAdvocates(filteredAdvocates);
+  // Parse search params for the API call
+  const advocateSearchParams: AdvocateSearchParams = {
+    page: searchParams.page ? Number(searchParams.page) : undefined,
+    limit: searchParams.limit ? Number(searchParams.limit) : undefined,
+    query: searchParams.query || undefined,
+    sortBy: searchParams.sortBy || undefined,
+    sortOrder: searchParams.sortOrder || undefined,
+    filters: {
+      degree,
+      minExperience: searchParams.minExperience ? Number(searchParams.minExperience) : undefined,
+    },
   };
 
-  const onClick = () => {
-    console.log(advocates);
-    setFilteredAdvocates(advocates);
-  };
+  // Fetch data on the server
+  const initialData = await getAdvocates(advocateSearchParams);
 
   return (
     <div>
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term"></span>
-        </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
-      </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
-        </tr>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate, idx) => {
-            return (
-              <tr key={`advocate-${idx}`}>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s, idx) => (
-                    <div key={`specialty-${idx}`}>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
- </div>
+      <Suspense fallback={<div style={{ padding: "20px" }}>Loading advocates...</div>}>
+        <AdvocateSearchClient 
+          initialData={initialData}
+          initialSearchParams={advocateSearchParams}
+        />
+      </Suspense>
+    </div>
   );
 }
