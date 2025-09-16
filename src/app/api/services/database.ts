@@ -1,4 +1,4 @@
-import { SQL, and, or, count, desc, asc, eq } from "drizzle-orm";
+import { SQL, count, desc, asc } from "drizzle-orm";
 import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
 import db from "../../../db";
 import { SearchRequest } from "../../../types/search";
@@ -95,32 +95,5 @@ export abstract class DatabaseService<T, TFilters = Record<string, any>> {
         hasPrev: page > 1,
       },
     };
-  }
-
-  // Find by ID with proper column access
-  async findById(id: number): Promise<T | null> {
-    // Ensure the table has an 'id' column
-    if (!this.config.table.id) {
-      throw new Error('Table does not have an id column');
-    }
-
-    const [result] = await db
-      .select()
-      .from(this.config.table)
-      .where(eq(this.config.table.id, id))
-      .limit(1);
-
-    return result as T || null;
-  }
-
-  // Generic find one method
-  async findOne(whereClause: SQL): Promise<T | null> {
-    const [result] = await db
-      .select()
-      .from(this.config.table)
-      .where(whereClause)
-      .limit(1);
-
-    return result as T || null;
   }
 }

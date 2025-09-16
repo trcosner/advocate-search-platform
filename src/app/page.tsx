@@ -25,11 +25,10 @@ async function getAdvocates(searchParams: AdvocateSearchParams) {
 }
 
 export default async function HomePage({ searchParams }: PageProps) {
-  // Validate degree parameter
-  const degreeParam = searchParams.degree;
-  const degree = degreeParam && Object.values(DegreeType).includes(degreeParam as DegreeType)
-    ? degreeParam as DegreeType
-    : undefined;
+const degreeParam = searchParams.degree;
+const degree = degreeParam 
+  ? Object.values(DegreeType).find(d => d.toLowerCase() === degreeParam.toLowerCase()) 
+  : undefined;
 
   // Parse search params for the API call
   const advocateSearchParams: AdvocateSearchParams = {

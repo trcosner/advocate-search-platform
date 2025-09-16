@@ -17,9 +17,8 @@ export default function AdvocateSearchClient({
   const [localSearchTerm, setLocalSearchTerm] = useState(initialSearchParams.query || "");
   const { data, loading, error, searchParams, updateSearch } = useSearchAdvocates({
     initialData,
-    enableAutoSearch: false // We'll handle search manually
+    enableAutoSearch: false // We'll handle search manually - only for url change search
   });
-
   const currentData = data || initialData;
   const advocates = currentData?.data || [];
   const pagination = currentData?.pagination;
@@ -101,7 +100,7 @@ export default function AdvocateSearchClient({
               value={localSearchTerm}
               onChange={handleSearchChange}
               onKeyPress={handleKeyPress}
-              placeholder="Search by name, city, degree, or specialties..."
+              placeholder="Search by name, city, or specialty"
               style={{ 
                 border: "1px solid #ccc", 
                 padding: "8px", 

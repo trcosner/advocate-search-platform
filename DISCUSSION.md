@@ -34,6 +34,7 @@
 - **Virtual scrolling** for massive advocate lists, though use by patients in a healthcare application could point to pagination being the better implementation for these users and the point of this list anyways.
 - **Redis caching layer** for search result optimization  
 - **CDN implementation** for global patient access
+- **DB Schema Changes** with more time I would create a specialties table and a advocate_specialties table. Also bigint for phoneNumber is ok since data provided was normalized to 5559872345 format, if we wanted to preserve special characters like 1-555-555-5555, we might want to change this to text
 
 ### Enhanced Patient Experience
 - **Advanced filtering** by insurance, availability, patient ratings
@@ -41,5 +42,6 @@
 - **Real-time availability** status updates
 - **Booking/contact integration** for patient-advocate connection
 
-### Code Quality
-- Make a table for Specialties and create a filter for specialties
+
+
+

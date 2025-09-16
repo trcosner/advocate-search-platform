@@ -108,16 +108,14 @@ export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> 
         orderByClauses.push(orderFn(advocates.createdAt));
       }
     } else {
-      // Default sort by createdAt (newest first)
-      orderByClauses.push(desc(advocates.createdAt));
+      // Default sort by years exp (most first)
+      orderByClauses.push(desc(advocates.yearsOfExperience));
     }
     
-    // Always add secondary sort by name for consistency
     orderByClauses.push(asc(advocates.lastName), asc(advocates.firstName));
     
     return orderByClauses;
   }
 }
 
-// Export singleton instance
 export const advocateService = new AdvocateService();

@@ -31,7 +31,6 @@ export default function AdvocateSearchFilters({
   const hasActiveFilters = Object.values(filters).some(value => 
     value !== undefined && value !== null && value !== ""
   );
-
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 space-y-4">
       <div className="flex items-center justify-between">

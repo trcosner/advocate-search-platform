@@ -6,7 +6,6 @@ export async function GET(request: NextRequest): Promise<Response> {
   try {
     const { searchParams } = new URL(request.url);
     
-    // Validate degree parameter
     const degreeParam = searchParams.get('degree');
     const degree = degreeParam && Object.values(DegreeType).includes(degreeParam as DegreeType) 
       ? degreeParam as DegreeType

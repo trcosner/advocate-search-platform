@@ -16,3 +16,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE INDEX IF NOT EXISTS idx_advocates_first_name_trgm ON advocates USING GIN (first_name gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS idx_advocates_last_name_trgm ON advocates USING GIN (last_name gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS idx_advocates_city_trgm ON advocates USING GIN (city gin_trgm_ops);
+
+CREATE INDEX IF NOT EXISTS idx_advocates_full_name_trgm ON advocates 
+USING GIN ((first_name || ' ' || last_name) gin_trgm_ops);
