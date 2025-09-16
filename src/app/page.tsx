@@ -1,7 +1,8 @@
-import { Suspense } from "react";
+import React from "react";
 import { advocateService } from "./api/services/advocate";
 import { AdvocateSearchParams, DegreeType } from "../types/api";
-import AdvocateSearchClient from "./components/AdvocateSearchClient";
+import AdvocateSearchWrapper from "./components/advocates/AdvocateSearchWrapper";
+
 
 interface PageProps {
   searchParams: {
@@ -25,35 +26,46 @@ async function getAdvocates(searchParams: AdvocateSearchParams) {
 }
 
 export default async function HomePage({ searchParams }: PageProps) {
-const degreeParam = searchParams.degree;
-const degree = degreeParam 
-  ? Object.values(DegreeType).find(d => d.toLowerCase() === degreeParam.toLowerCase()) 
-  : undefined;
+  // Only fetch data if there are search params (not during static generation)
+  const hasSearchParams = Object.keys(searchParams).some(key => searchParams[key as keyof typeof searchParams]);
+  
+  let initialData;
+  let advocateSearchParams: AdvocateSearchParams = {};
+  
+  if (hasSearchParams) {
+    const degreeParam = searchParams.degree;
+    const degree = degreeParam 
+      ? Object.values(DegreeType).find(d => d.toLowerCase() === degreeParam.toLowerCase()) 
+      : undefined;
 
-  // Parse search params for the API call
-  const advocateSearchParams: AdvocateSearchParams = {
-    page: searchParams.page ? Number(searchParams.page) : undefined,
-    limit: searchParams.limit ? Number(searchParams.limit) : undefined,
-    query: searchParams.query || undefined,
-    sortBy: searchParams.sortBy || undefined,
-    sortOrder: searchParams.sortOrder || undefined,
-    filters: {
-      degree,
-      minExperience: searchParams.minExperience ? Number(searchParams.minExperience) : undefined,
-    },
-  };
+    // Parse search params for the API call
+    advocateSearchParams = {
+      page: searchParams.page ? Number(searchParams.page) : undefined,
+      limit: searchParams.limit ? Number(searchParams.limit) : undefined,
+      query: searchParams.query || undefined,
+      sortBy: searchParams.sortBy || undefined,
+      sortOrder: searchParams.sortOrder || undefined,
+      filters: {
+        degree,
+        minExperience: searchParams.minExperience ? Number(searchParams.minExperience) : undefined,
+      },
+    };
 
-  // Fetch data on the server
-  const initialData = await getAdvocates(advocateSearchParams);
+    // Fetch data on the server only when we have search params
+    try {
+      initialData = await getAdvocates(advocateSearchParams);
+    } catch (error) {
+      console.error('Error loading initial data:', error);
+      // Continue without initial data
+    }
+  }
 
   return (
-    <div>
-      <Suspense fallback={<div style={{ padding: "20px" }}>Loading advocates...</div>}>
-        <AdvocateSearchClient 
-          initialData={initialData}
-          initialSearchParams={advocateSearchParams}
-        />
-      </Suspense>
+    <div className="h-full flex flex-col">
+      <AdvocateSearchWrapper 
+        initialData={initialData || undefined}
+        initialSearchParams={advocateSearchParams}
+      />
     </div>
   );
 }

@@ -101,9 +101,9 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions = {}) {
     router.push(newUrl, { scroll: false });
   }, [parseSearchParams, router]);
 
-  // Auto-search when URL changes
+  // Auto-search when URL changes (only in client-side navigation)
   useEffect(() => {
-    if (enableAutoSearch) {
+    if (enableAutoSearch && typeof window !== 'undefined') {
       const currentParams = parseSearchParams();
       searchAdvocates(currentParams);
     }
