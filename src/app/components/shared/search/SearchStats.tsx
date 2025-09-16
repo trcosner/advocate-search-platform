@@ -81,7 +81,7 @@ export default function SearchStats({
       </div>
 
       {totalResults > 0 && (
-        <div className="flex items-center gap-3 text-xs text-neutral-500 sm:text-sm">
+        <div className="hidden sm:flex items-center gap-3 text-xs text-neutral-500 sm:text-sm">
           {onResultsPerPageChange ? (
             <div className="flex items-center gap-2">
               <span>Show:</span>

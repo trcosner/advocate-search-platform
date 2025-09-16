@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, ChangeEvent, KeyboardEvent } from "react";
 import { buttonStyles, inputStyles, cn } from "@/utils/styles";
 import CloseIcon from "../icons/CloseIcon";
-import { useDebounce } from "../../../../hooks/useDebounce";
 
 interface SearchInputProps {
   value: string;
@@ -11,7 +10,6 @@ interface SearchInputProps {
   onSearch: () => void;
   onClear: () => void;
   placeholder?: string;
-  debounceMs?: number;
   loading?: boolean;
   disabled?: boolean;
   className?: string;
@@ -23,30 +21,22 @@ export default function SearchInput({
   onSearch,
   onClear,
   placeholder = "Search...",
-  debounceMs = 300,
   loading = false,
   disabled = false,
   className = ""
 }: SearchInputProps) {
   const [inputValue, setInputValue] = useState(value);
-  const debouncedInputValue = useDebounce(inputValue, debounceMs);
 
   // Update input when external value changes
   useEffect(() => {
     setInputValue(value);
   }, [value]);
 
-  // Trigger search when debounced value changes
-  useEffect(() => {
-    if (debouncedInputValue !== value) {
-      onChange(debouncedInputValue);
-      onSearch();
-    }
-  }, [debouncedInputValue, value, onChange, onSearch]);
-
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  }, []);
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    onChange(newValue); // Update parent state but don't trigger search
+  }, [onChange]);
 
   const handleKeyPress = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

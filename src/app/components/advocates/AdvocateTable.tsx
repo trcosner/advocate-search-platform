@@ -69,7 +69,28 @@ export default function AdvocateTable({
       key: 'phoneNumber',
       label: 'Phone',
       sortable: false,
-      render: (advocate: Advocate) => advocate.phoneNumber.toString()
+      className: 'w-40 min-w-[10rem]', // Give phone column more space
+      headerClassName: 'w-40 min-w-[10rem]', // Apply same width to header
+      render: (advocate: Advocate) => {
+        const formatPhoneNumber = (phone: number): string => {
+          const phoneStr = phone.toString();
+          return phoneStr.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+        };
+        
+        const handlePhoneClick = () => {
+          alert(`This would call ${advocate.firstName} ${advocate.lastName} at ${formatPhoneNumber(advocate.phoneNumber)}.`);
+        };
+        
+        return (
+          <button
+            onClick={handlePhoneClick}
+            className="text-primary-600 hover:text-primary-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded underline cursor-pointer"
+            aria-label={`Call ${advocate.firstName} ${advocate.lastName}`}
+          >
+            {formatPhoneNumber(advocate.phoneNumber)}
+          </button>
+        );
+      }
     }
   ];
 
