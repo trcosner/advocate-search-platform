@@ -50,7 +50,6 @@ export default async function HomePage({ searchParams }: PageProps) {
     initialData = await getAdvocates(advocateSearchParams);
   } catch (error) {
     console.error('Error loading initial data:', error);
-    // Continue without initial data
   }
 
   return (

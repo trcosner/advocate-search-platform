@@ -26,7 +26,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     };
 
     const result = await advocateService.search(searchRequest);
-
+    
     const response: AdvocateResponse = {
       success: true,
       data: result,

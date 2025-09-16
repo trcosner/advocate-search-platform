@@ -5,13 +5,11 @@ import { AdvocateSearchParams, PaginatedResult, Advocate, DegreeType } from '../
 
 export interface UseSearchAdvocatesOptions {
   initialData?: PaginatedResult<Advocate>;
-  enableAutoSearch?: boolean;
 }
 
 export function useSearchAdvocates(options: UseSearchAdvocatesOptions = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { enableAutoSearch = true } = options;
 
   const { data, loading, error, execute } = useRequest<PaginatedResult<Advocate>>({
     onSuccess: (data) => {
@@ -100,14 +98,6 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions = {}) {
     const newUrl = `/?${urlParams.toString()}`;
     router.push(newUrl, { scroll: false });
   }, [parseSearchParams, router]);
-
-  // Auto-search when URL changes (only in client-side navigation)
-  useEffect(() => {
-    if (enableAutoSearch && typeof window !== 'undefined') {
-      const currentParams = parseSearchParams();
-      searchAdvocates(currentParams);
-    }
-  }, [searchParams, searchAdvocates, parseSearchParams, enableAutoSearch]);
 
   // Initialize with SSR data if provided
   useEffect(() => {
