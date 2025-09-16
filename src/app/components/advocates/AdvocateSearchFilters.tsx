@@ -2,11 +2,12 @@
 
 import { useState, useCallback } from "react";
 import { AdvocateFilters, DegreeType } from "../../../types/advocate";
-import { inputStyles, cn } from "../../../utils/styles";
+import { inputStyles, cn, buttonStyles } from "../../../utils/styles";
 import CustomSelect from "../shared/form/CustomSelect";
 
 interface AdvocateSearchFiltersProps {
   initialFilters?: AdvocateFilters;
+  onClear: () => void
   onFiltersChange: (filters: AdvocateFilters) => void;
   disabled?: boolean;
 }
@@ -14,6 +15,7 @@ interface AdvocateSearchFiltersProps {
 export default function AdvocateSearchFilters({
   initialFilters = {},
   onFiltersChange,
+  onClear,
   disabled = false
 }: AdvocateSearchFiltersProps) {
   const [filters, setFilters] = useState<AdvocateFilters>(initialFilters);
@@ -23,6 +25,13 @@ export default function AdvocateSearchFilters({
     setFilters(newFilters);
     onFiltersChange(newFilters);
   }, [filters, onFiltersChange]);
+
+  const handleClear = () => {
+    const newFilters = {degree: undefined, minExperience: 0};
+    onFiltersChange(newFilters)
+    onClear()
+    setFilters(newFilters)
+  }
 
   return (
       <div className="space-y-4">
@@ -49,21 +58,35 @@ export default function AdvocateSearchFilters({
             <label htmlFor="minExperience" className="block text-sm font-medium text-neutral-700 mb-1.5">
               Minimum Experience (years)
             </label>
-            <input
-              type="number"
-              id="minExperience"
-              value={filters.minExperience ?? ""}
-              onChange={(e) => handleFilterChange('minExperience', e.target.value ? parseInt(e.target.value) : undefined)}
-              placeholder="0"
-              min="0"
-              max="50"
-              disabled={disabled}
-              className={cn(
-                inputStyles.base,
-                "px-3 py-2 text-sm",
-                disabled && "bg-neutral-50 opacity-50"
-              )}
-            />
+            <div className="flex gap-2">
+              <input
+                type="number"
+                id="minExperience"
+                value={filters.minExperience ?? ""}
+                onChange={(e) => handleFilterChange('minExperience', e.target.value ? parseInt(e.target.value) : undefined)}
+                placeholder="0"
+                min="0"
+                max="50"
+                disabled={disabled}
+                className={cn(
+                  inputStyles.base,
+                  "px-3 py-2 text-sm flex-1",
+                  disabled && "bg-neutral-50 opacity-50"
+                )}
+              />
+              <button
+                onClick={handleClear}
+                disabled={disabled}
+                className={cn(
+                  buttonStyles.secondary,
+                  "px-4 py-2.5 text-sm font-medium whitespace-nowrap",
+                  disabled && "opacity-50 cursor-not-allowed"
+                )}
+                aria-label="Clear filters"
+              >
+                Clear
+              </button>
+            </div>
           </div>
         </div>
       </div>

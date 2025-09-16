@@ -39,12 +39,21 @@ export default function AdvocateSearchClient({
     });
   }, [localSearchTerm, updateSearch]);
 
+  const handleResetSearch = useCallback((): void => {
+    setLocalSearchTerm("");
+    updateSearch({
+      query: undefined,
+      page: 1,
+    });
+  }, [updateSearch]);
+
+
   const handleReset = useCallback((): void => {
     setLocalSearchTerm("");
     updateSearch({
       query: undefined,
       page: 1,
-      filters: {},
+      filters: {degree: undefined, minExperience: 0},
     });
   }, [updateSearch]);
 
@@ -106,7 +115,7 @@ export default function AdvocateSearchClient({
             searchValue={localSearchTerm}
             onSearchChange={handleSearchChange}
             onSearch={handleSearchSubmit}
-            onClear={handleReset}
+            onClear={handleResetSearch}
             searchPlaceholder="Search by name, city, or specialty"
             searchLoading={loading}
             searchDisabled={loading}
@@ -115,6 +124,7 @@ export default function AdvocateSearchClient({
 
         <AdvocateSearchFilters
           initialFilters={searchParams.filters || {}}
+          onClear={handleReset}
           onFiltersChange={handleFiltersChange}
           disabled={loading}
         />
