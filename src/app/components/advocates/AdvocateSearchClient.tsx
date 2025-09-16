@@ -4,10 +4,11 @@ import { useState, useCallback } from "react";
 import { useSearchAdvocates } from "../../../hooks/useSearchAdvocates";
 import { Advocate, AdvocateSearchParams, AdvocateFilters, PaginatedResult } from "../../../types/api";
 import AdvocateSearchFilters from "./AdvocateSearchFilters";
-import AdvocateTable from "./AdvocateTable";
+import AdvocateResultsView from "./AdvocateResultsView";
 import SearchControls from "../shared/search/SearchControls";
 import SearchStats from "../shared/search/SearchStats";
 import SearchResults from "../shared/search/SearchResults";
+import { buttonStyles, cn } from "@/utils/styles";
 
 interface AdvocateSearchClientProps {
   initialData?: PaginatedResult<Advocate>;
@@ -84,7 +85,10 @@ export default function AdvocateSearchClient({
         </div>
         <button 
           onClick={() => window.location.reload()}
-          className="btn-primary"
+          className={cn(
+            buttonStyles.primary,
+            "px-4 py-2"
+          )}
         >
           Retry
         </button>
@@ -94,13 +98,10 @@ export default function AdvocateSearchClient({
 
   return (
     <div className="h-full flex flex-col">
-      {/* Fixed Header Section */}
       <div className="flex-shrink-0 space-y-6 pb-6">
-        {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-neutral-900 mb-6">Advocate Search</h1>
+          <h1 className="text-xl font-bold text-primary-700 mb-6">Advocates</h1>
           
-          {/* Search Controls */}
           <SearchControls
             searchValue={localSearchTerm}
             onSearchChange={handleSearchChange}
@@ -115,14 +116,12 @@ export default function AdvocateSearchClient({
           />
         </div>
 
-        {/* Filters */}
         <AdvocateSearchFilters
           initialFilters={searchParams.filters || {}}
           onFiltersChange={handleFiltersChange}
           disabled={loading}
         />
 
-        {/* Search Stats */}
         {(searchParams.query || (pagination && pagination.total > 0)) && (
           <SearchStats
             query={searchParams.query}
@@ -135,7 +134,6 @@ export default function AdvocateSearchClient({
         )}
       </div>
 
-      {/* Scrollable Results Section */}
       <div className="flex-1 min-h-0">
         <SearchResults
           data={advocates}
@@ -148,7 +146,7 @@ export default function AdvocateSearchClient({
           showPaginationBottom={true}
           className="h-full"
         >
-          <AdvocateTable
+          <AdvocateResultsView
             advocates={advocates}
             currentSort={searchParams.sortBy}
             currentOrder={searchParams.sortOrder}

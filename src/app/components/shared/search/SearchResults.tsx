@@ -50,7 +50,6 @@ export default function SearchResults<T = any>({
 
   const shouldShowPagination = pagination && pagination.totalPages > 1 && onPageChange;
 
-  // Empty state
   if (data.length === 0) {
     return (
       <div className={`text-center py-8 ${className}`}>
@@ -68,7 +67,6 @@ export default function SearchResults<T = any>({
 
   return (
     <div className={`h-full flex flex-col ${className}`}>
-      {/* Top Pagination */}
       {shouldShowPagination && showPaginationTop && (
         <div className="flex-shrink-0 pb-4">
           <Pagination
@@ -83,12 +81,10 @@ export default function SearchResults<T = any>({
         </div>
       )}
 
-      {/* Scrollable Results Content */}
       <div className={`flex-1 min-h-0 overflow-y-auto ${loading ? "opacity-75 pointer-events-none" : ""}`}>
         {children}
       </div>
 
-      {/* Bottom Pagination */}
       {shouldShowPagination && showPaginationBottom && (
         <div className="flex-shrink-0 pt-4">
           <Pagination

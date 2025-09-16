@@ -17,7 +17,6 @@ export default function PaginationInfo({
   className = "",
   compact = false
 }: PaginationInfoProps) {
-  // Calculate result range
   const startResult = totalResults > 0 ? ((currentPage - 1) * resultsPerPage) + 1 : 0;
   const endResult = Math.min(currentPage * resultsPerPage, totalResults);
 

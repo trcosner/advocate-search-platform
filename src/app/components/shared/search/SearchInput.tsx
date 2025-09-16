@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, ChangeEvent, KeyboardEvent } from "react";
+import { buttonStyles, inputStyles, cn } from "@/utils/styles";
 
 interface SearchInputProps {
   value: string;
@@ -63,7 +64,6 @@ export default function SearchInput({
 
   return (
     <div className={`relative flex gap-3 ${className}`}>
-      {/* Search Input */}
       <div className="relative flex-1">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         </div>
@@ -75,35 +75,27 @@ export default function SearchInput({
           onKeyPress={handleKeyPress}
           placeholder={placeholder}
           disabled={disabled || loading}
-          className="
-            w-full pl-10 pr-10 py-2.5 
-            border border-neutral-300 rounded-lg
-            bg-white text-neutral-900 placeholder-neutral-500
-            focus:ring-2 focus:ring-primary-500 focus:border-primary-500
-            disabled:bg-neutral-50 disabled:text-neutral-400 disabled:cursor-not-allowed
-            transition-colors duration-200
-            text-sm font-medium
-          "
+          className={cn(
+            inputStyles.base,
+            inputStyles.withIcon,
+            "text-sm font-medium"
+          )}
           aria-label="Search input"
         />
 
-        {/* Clear Button */}
         {showClear && (
           <button
             onClick={handleClear}
             disabled={disabled}
-            className="
-              absolute inset-y-0 right-0 pr-3 flex items-center
-              text-neutral-400 hover:text-neutral-600
-              disabled:cursor-not-allowed
-              transition-colors duration-200
-            "
+            className={cn(
+              buttonStyles.ghost,
+              "absolute inset-y-0 right-0 pr-3 flex items-center"
+            )}
             aria-label="Clear search"
           >
           </button>
         )}
 
-        {/* Loading Spinner */}
         {loading && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
             <div className="animate-spin h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full" />
@@ -111,11 +103,13 @@ export default function SearchInput({
         )}
       </div>
 
-      {/* Search Button */}
       <button
         onClick={onSearch}
         disabled={disabled || loading}
-        className="btn-primary px-4 py-2.5 text-sm font-medium whitespace-nowrap"
+        className={cn(
+          buttonStyles.primary,
+          "px-4 py-2.5 text-sm font-medium whitespace-nowrap"
+        )}
         aria-label="Search"
       >
         {loading ? "Searching..." : "Search"}
@@ -126,7 +120,10 @@ export default function SearchInput({
         <button
           onClick={handleClear}
           disabled={disabled || loading}
-          className="btn-secondary px-4 py-2.5 text-sm font-medium whitespace-nowrap"
+          className={cn(
+            buttonStyles.secondary,
+            "px-4 py-2.5 text-sm font-medium whitespace-nowrap"
+          )}
           aria-label="Clear search"
         >
           Clear

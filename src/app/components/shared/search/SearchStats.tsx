@@ -19,7 +19,6 @@ export default function SearchStats({
   loading = false,
   className = ""
 }: SearchStatsProps) {
-  // Calculate result range
   const startResult = totalResults > 0 ? ((currentPage - 1) * resultsPerPage) + 1 : 0;
   const endResult = Math.min(currentPage * resultsPerPage, totalResults);
 
@@ -35,7 +34,6 @@ export default function SearchStats({
 
   return (
     <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 ${className}`}>
-      {/* Search query and results count */}
       <div className="flex flex-col gap-1">
         {query && (
           <p className="text-sm text-neutral-600">
@@ -45,7 +43,6 @@ export default function SearchStats({
         )}
         
         <div className="flex items-center gap-4">
-          {/* Results summary */}
           <p className="text-sm text-neutral-700">
             {totalResults === 0 ? (
               <span>No results found</span>
@@ -64,7 +61,6 @@ export default function SearchStats({
             )}
           </p>
 
-          {/* Page info for multiple pages */}
           {totalPages > 1 && (
             <p className="text-sm text-neutral-500">
               Page {currentPage} of {totalPages}
@@ -73,7 +69,6 @@ export default function SearchStats({
         </div>
       </div>
 
-      {/* Results per page info (mobile-friendly) */}
       {totalResults > 0 && (
         <div className="text-xs text-neutral-500 sm:text-sm">
           {resultsPerPage} per page

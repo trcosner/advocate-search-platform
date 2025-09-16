@@ -35,12 +35,16 @@
 - **Redis caching layer** for search result optimization  
 - **CDN implementation** for global patient access
 - **DB Schema Changes** with more time I would create a specialties table and a advocate_specialties table. Also bigint for phoneNumber is ok since data provided was normalized to 5559872345 format, if we wanted to preserve special characters like 1-555-555-5555, we might want to change this to text
+- **SSR Styles** styles not included with response returned from ssr, getting this to work would be nice.
 
 ### Enhanced Patient Experience
 - **Advanced filtering** by insurance, availability, patient ratings
 - **Advocate detailed profiles** with reviews and credentials
 - **Real-time availability** status updates
 - **Booking/contact integration** for patient-advocate connection
+
+### Code Quality
+- **Design System** individual elements like inputs, dropdowns, and buttons would all have reusable DRY components in a more robust design system
 
 
 

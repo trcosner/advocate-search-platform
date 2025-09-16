@@ -5,7 +5,6 @@ import { ReactNode } from "react";
 interface ResponsiveGridProps {
   children: ReactNode;
   className?: string;
-  minItemWidth?: string; // CSS value like "280px"
   gap?: "sm" | "md" | "lg" | "xl";
   cols?: {
     sm?: number;
@@ -25,7 +24,6 @@ const gapMap = {
 export default function ResponsiveGrid({
   children,
   className = "",
-  minItemWidth = "280px",
   gap = "md",
   cols
 }: ResponsiveGridProps) {
@@ -45,23 +43,15 @@ export default function ResponsiveGrid({
       
       return `${baseClasses} grid-cols-1 ${responsiveClasses} ${gapClass}`;
     } else {
-      // Use auto-fit with minimum width
-      return `${baseClasses} ${gapClass}`;
+      // Use auto-fit behavior with Tailwind classes only
+      return `${baseClasses} ${gapClass} grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4`;
     }
   };
 
   const gridClasses = getGridClasses();
-  
-  // For auto-fit grids, use CSS custom property
-  const customStyles = !cols ? {
-    gridTemplateColumns: `repeat(auto-fit, minmax(${minItemWidth}, 1fr))`
-  } : undefined;
 
   return (
-    <div 
-      className={`${gridClasses} ${className}`}
-      style={customStyles}
-    >
+    <div className={`${gridClasses} ${className}`}>
       {children}
     </div>
   );

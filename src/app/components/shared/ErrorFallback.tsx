@@ -1,5 +1,7 @@
+import { buttonStyles, cn } from "@/utils/styles";
+
 interface ErrorFallbackProps {
-  error: Error;
+  error: string;
   resetErrorBoundary: () => void;
   title?: string;
   message?: string;
@@ -28,7 +30,10 @@ export default function ErrorFallback({
         {/* Action Button */}
         <button 
           onClick={resetErrorBoundary}
-          className="btn-primary text-sm sm:text-base px-4 py-2 sm:px-6 sm:py-3 min-w-[120px]"
+          className={cn(
+            buttonStyles.primary,
+            "text-sm sm:text-base px-4 py-2 sm:px-6 sm:py-3 min-w-[120px]"
+          )}
           type="button"
         >
           {buttonText}
