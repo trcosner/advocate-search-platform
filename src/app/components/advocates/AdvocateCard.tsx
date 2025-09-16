@@ -3,6 +3,7 @@
 import { Advocate } from "@/types/advocate";
 import { cardStyles, badgeStyles, cn } from "@/utils/styles";
 import { useCallback } from "react";
+import PhoneIcon from "../shared/icons/PhoneIcon";
 
 interface AdvocateCardProps {
   advocate: Advocate;
@@ -93,19 +94,7 @@ export default function AdvocateCard({ advocate, className = "" }: AdvocateCardP
       <div className="pt-4 border-t border-neutral-100 mt-auto">
         <div className="flex items-center justify-between text-sm text-neutral-600">
           <div className="flex items-center">
-            <svg 
-              className="h-4 w-4 mr-2 text-neutral-400" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21L6.3 10.3s-.132.274-.132.724c0 .636.247 1.245.7 1.698.452.453 1.062.7 1.698.7.45 0 .724-.132.724-.132l.913-3.924a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-              />
-            </svg>
+            <PhoneIcon className="h-4 w-4 mr-2 text-neutral-400" />
             <span>{formatPhoneNumber(advocate.phoneNumber)}</span>
           </div>
         </div>

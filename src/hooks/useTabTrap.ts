@@ -5,25 +5,26 @@ import { useEffect, useRef, useCallback } from "react";
 interface UseTabTrapOptions {
   isActive: boolean;
   onEscape?: () => void;
+  autoFocus?: boolean;
+  excludeSelector?: string;
 }
 
-export function useTabTrap({ isActive, onEscape }: UseTabTrapOptions) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function useTabTrap({ isActive, onEscape, autoFocus = true, excludeSelector }: UseTabTrapOptions) {
+  const trapRef = useRef<HTMLDivElement>(null);
 
   const getFocusableElements = useCallback((): HTMLElement[] => {
-    if (!containerRef.current) return [];
+    if (!trapRef.current) return [];
     
-    const focusableSelectors = [
-      'button:not([disabled])',
-      'input:not([disabled])',
-      'select:not([disabled])',
-      'textarea:not([disabled])',
-      'a[href]',
-      '[tabindex]:not([tabindex="-1"])'
-    ].join(',');
+    const selector = "button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex='-1'])";
+    let elements = Array.from(trapRef.current.querySelectorAll(selector)) as HTMLElement[];
     
-    return Array.from(containerRef.current.querySelectorAll(focusableSelectors));
-  }, []);
+    // Filter out excluded elements
+    if (excludeSelector) {
+      elements = elements.filter(el => !el.matches(excludeSelector));
+    }
+    
+    return elements;
+  }, [excludeSelector]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!isActive) return;
@@ -34,46 +35,39 @@ export function useTabTrap({ isActive, onEscape }: UseTabTrapOptions) {
       return;
     }
 
-    // Only handle Tab trapping, let other components handle their own keys
-    if (e.key === 'Tab') {
-      const focusableElements = getFocusableElements();
-      if (focusableElements.length === 0) return;
+    if (e.key !== 'Tab') return;
 
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-      const activeElement = document.activeElement as HTMLElement;
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length === 0) return;
 
-      if (e.shiftKey) {
-        // Shift + Tab (going backwards)
-        if (activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        }
-      } else {
-        // Tab (going forwards)
-        if (activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
-        }
-      }
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    const activeElement = document.activeElement;
+
+    // Only trap if we're at the boundaries
+    if (e.shiftKey && activeElement === firstElement) {
+      e.preventDefault();
+      lastElement.focus();
+    } else if (!e.shiftKey && activeElement === lastElement) {
+      e.preventDefault();
+      firstElement.focus();
     }
+    // Otherwise, let the browser handle normal tab navigation
   }, [isActive, onEscape, getFocusableElements]);
 
   useEffect(() => {
-    if (isActive) {
-      document.addEventListener('keydown', handleKeyDown);
-      
-      // Focus the first focusable element when activated
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
+
+  useEffect(() => {
+    if (isActive && autoFocus && trapRef.current) {
       const focusableElements = getFocusableElements();
       if (focusableElements.length > 0) {
         focusableElements[0].focus();
       }
     }
+  }, [isActive, autoFocus, getFocusableElements]);
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isActive, handleKeyDown, getFocusableElements]);
-
-  return containerRef;
+  return trapRef;
 }

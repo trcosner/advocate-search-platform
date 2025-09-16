@@ -1,7 +1,7 @@
 
 export const buttonStyles = {
   primary: `
-    bg-primary-600 text-white rounded-lg
+    bg-primary-700 text-white rounded-lg
     hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
     disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed
     transition-colors duration-200

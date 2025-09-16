@@ -42,9 +42,11 @@
 - **Advocate detailed profiles** with reviews and credentials
 - **Real-time availability** status updates
 - **Booking/contact integration** for patient-advocate connection
+- **Autosearch** as you type with debounce
 
 ### Code Quality
 - **Design System** individual elements like inputs, dropdowns, and buttons would all have reusable DRY components in a more robust design system
+- **Backend Build-out** create a more robust backend with something like node and express and use middleware for error handling in the backend 
 
 
 

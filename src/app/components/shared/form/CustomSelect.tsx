@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/utils/styles";
 import { useTabTrap } from "../../../../hooks/useTabTrap";
+import ChevronDownIcon from "../icons/ChevronDownIcon";
 
 interface Option {
   value: string | undefined;
@@ -31,7 +32,9 @@ export default function CustomSelect({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useTabTrap({ 
     isActive: isOpen, 
-    onEscape: () => setIsOpen(false) 
+    onEscape: () => setIsOpen(false),
+    autoFocus: true,
+    excludeSelector: '[data-trigger="true"]' // Exclude the trigger button from tab trap
   });
 
   const selectedOption = options.find(option => option.value === value);
@@ -54,48 +57,12 @@ export default function CustomSelect({
   }, [dropdownRef]);
 
   useEffect(() => {
-    const handleKeyDownCapture = (e: KeyboardEvent) => {
-      if (!isOpen) return;
-
-      // Handle keyboard navigation within the dropdown
-      switch (e.key) {
-        case 'ArrowDown':
-          e.preventDefault();
-          e.stopPropagation();
-          setFocusedIndex(prev => 
-            prev < options.length - 1 ? prev + 1 : 0
-          );
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          e.stopPropagation();
-          setFocusedIndex(prev => 
-            prev > 0 ? prev - 1 : options.length - 1
-          );
-          break;
-        case 'Enter':
-        case ' ':
-          e.preventDefault();
-          e.stopPropagation();
-          if (focusedIndex >= 0) {
-            handleSelect(options[focusedIndex].value);
-          }
-          break;
-      }
-    };
-
-    if (isOpen) {
-      // Use capture phase to ensure we handle events before other listeners
-      document.addEventListener('keydown', handleKeyDownCapture, { capture: true });
-    }
-
     document.addEventListener('mousedown', handleClickOutside);
     
     return () => {
-      document.removeEventListener('keydown', handleKeyDownCapture, { capture: true });
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen, focusedIndex, options, handleSelect, handleClickOutside]);
+  }, [handleClickOutside]);
 
   useEffect(() => {
     if (isOpen) {
@@ -112,6 +79,7 @@ export default function CustomSelect({
         type="button"
         onClick={handleToggle}
         disabled={disabled}
+        data-trigger="true"
         className={cn(
           "w-full appearance-none bg-white border border-neutral-300 rounded-lg",
           "px-3 py-2 text-sm font-medium text-neutral-700 text-left",
@@ -126,17 +94,12 @@ export default function CustomSelect({
         <span className={!selectedOption ? "text-neutral-500" : ""}>
           {selectedOption?.label || placeholder}
         </span>
-        <svg
+        <ChevronDownIcon 
           className={cn(
             "h-4 w-4 text-neutral-400 transition-transform",
             isOpen && "rotate-180"
           )}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        />
       </button>
 
       {isOpen && (
@@ -147,12 +110,34 @@ export default function CustomSelect({
                 <button
                   type="button"
                   onClick={() => handleSelect(option.value)}
+                  onFocus={() => setFocusedIndex(index)}
+                  onKeyDown={(e) => {
+                    switch (e.key) {
+                      case 'Enter':
+                      case ' ':
+                        e.preventDefault();
+                        handleSelect(option.value);
+                        break;
+                      case 'ArrowDown':
+                        e.preventDefault();
+                        const nextIndex = index < options.length - 1 ? index + 1 : 0;
+                        const nextButton = dropdownRef.current?.querySelectorAll('button:not([data-trigger="true"])')[nextIndex] as HTMLButtonElement;
+                        if (nextButton) nextButton.focus();
+                        break;
+                      case 'ArrowUp':
+                        e.preventDefault();
+                        const prevIndex = index > 0 ? index - 1 : options.length - 1;
+                        const prevButton = dropdownRef.current?.querySelectorAll('button:not([data-trigger="true"])')[prevIndex] as HTMLButtonElement;
+                        if (prevButton) prevButton.focus();
+                        break;
+                    }
+                  }}
                   className={cn(
                     "w-full text-left px-3 py-2 text-sm transition-colors",
                     option.value === value
                       ? "bg-primary-100 text-primary-900 font-medium"
                       : "text-neutral-700 hover:bg-neutral-50",
-                    index === focusedIndex && "bg-primary-50",
+                    index === focusedIndex && "bg-primary-50 ring-2 ring-primary-200",
                     "focus:outline-none focus:bg-primary-50"
                   )}
                   tabIndex={0}
