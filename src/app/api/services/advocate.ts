@@ -26,21 +26,50 @@ export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> 
     // General text search across multiple fields
     if (query) {
       const searchQuery = `%${query}%`;
+      
       conditions.push(
         or(
           ilike(advocates.firstName, searchQuery),
           ilike(advocates.lastName, searchQuery),
           ilike(advocates.city, searchQuery),
           ilike(advocates.degree, searchQuery),
-          // Search within specialties JSONB array
-          sql`EXISTS (
-            SELECT 1 FROM jsonb_array_elements_text(${advocates.specialties}) AS specialty 
-            WHERE specialty ILIKE ${searchQuery}
-          )`,
-          // Fuzzy search using similarity (requires pg_trgm extension)
-          sql`similarity(${advocates.firstName}, ${query}) > 0.3`,
-          sql`similarity(${advocates.lastName}, ${query}) > 0.3`,
-          sql`similarity(${advocates.city}, ${query}) > 0.3`
+          // Search within specialties with length-based strictness
+          ...(query.length >= 4 ? [
+            // For longer queries, use normal substring search
+            sql`(
+              CASE 
+                WHEN jsonb_typeof(${advocates.specialties}) = 'array' THEN
+                  EXISTS (
+                    SELECT 1 FROM jsonb_array_elements_text(${advocates.specialties}) AS specialty 
+                    WHERE specialty ILIKE ${searchQuery}
+                  )
+                ELSE
+                  ${advocates.specialties}::text ILIKE ${searchQuery}
+              END
+            )`
+          ] : [
+            // For short queries, only match at word boundaries (space + query or start + query)
+            sql`(
+              CASE 
+                WHEN jsonb_typeof(${advocates.specialties}) = 'array' THEN
+                  EXISTS (
+                    SELECT 1 FROM jsonb_array_elements_text(${advocates.specialties}) AS specialty 
+                    WHERE specialty ILIKE ${`% ${query}%`} OR specialty ILIKE ${`${query}%`}
+                  )
+                ELSE
+                  ${advocates.specialties}::text ILIKE ${`% ${query}%`} OR ${advocates.specialties}::text ILIKE ${`${query}%`}
+              END
+            )`
+          ]),
+          // Stricter fuzzy search using similarity (requires pg_trgm extension)
+          // Only match if similarity is high enough and query is long enough
+          sql`(
+            length(${query}) >= 4 AND (
+              similarity(${advocates.firstName}, ${query}) > 0.6 OR
+              similarity(${advocates.lastName}, ${query}) > 0.6 OR
+              similarity(${advocates.city}, ${query}) > 0.5
+            )
+          )`
         )
       );
     }

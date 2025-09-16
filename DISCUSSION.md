@@ -5,8 +5,7 @@
 ### Core Performance Improvements
 - **Database Integration**: PostgreSQL with pagination and indexing for scalability
 - **Pagination**: Traditional page-based navigation for reliable performance
-- **Search & Filtering**: By name, specialty, and location for patient advocate discovery
-- **API Optimization**: Debounced search requests and retry logic
+- **Search & Filtering**: By name, specialty, and location for patient advocate discovery, filter by experience and degree
 - **TypeScript Enhancement**: Proper typing throughout for code safety
 
 ### Patient-Focused UX Improvements  
@@ -16,7 +15,7 @@
 - **Loading states and error handling** for reliable patient experience
 
 ### Code Quality & Architecture
-- **Custom data fetching hook** with caching for future scalability
+- **Custom data fetching hook** for future scalability
 - **Component memoization** to prevent unnecessary re-renders
 - **Reusable UI components** for maintainable codebase
 
@@ -30,6 +29,7 @@
 
 ## Future Improvements (Given More Time)
 
+
 ### Advanced Performance
 - **Virtual scrolling** for massive advocate lists, though use by patients in a healthcare application could point to pagination being the better implementation for these users and the point of this list anyways.
 - **Redis caching layer** for search result optimization  
@@ -40,3 +40,6 @@
 - **Advocate detailed profiles** with reviews and credentials
 - **Real-time availability** status updates
 - **Booking/contact integration** for patient-advocate connection
+
+### Code Quality
+- Make a table for Specialties and create a filter for specialties

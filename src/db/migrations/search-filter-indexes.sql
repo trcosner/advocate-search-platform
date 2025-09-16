@@ -6,7 +6,7 @@ CREATE INDEX IF NOT EXISTS idx_advocates_degree ON advocates (degree);
 CREATE INDEX IF NOT EXISTS idx_advocates_years_experience ON advocates (years_of_experience);
 
 -- Add GIN index for full-text search on specialties (JSONB)
-CREATE INDEX IF NOT EXISTS idx_advocates_specialties_gin ON advocates USING GIN (payload);
+CREATE INDEX IF NOT EXISTS idx_advocates_specialties_gin ON advocates USING GIN (specialties);
 
 -- Add composite index for common search patterns
 CREATE INDEX IF NOT EXISTS idx_advocates_name_city ON advocates (first_name, last_name, city);
