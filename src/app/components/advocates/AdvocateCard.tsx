@@ -43,6 +43,7 @@ export default function AdvocateCard({ advocate, className = "" }: AdvocateCardP
         "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
         "hover:shadow-lg focus:shadow-lg",
         "flex flex-col min-h-[200px]", // Minimum height with flexible growth
+        "mr-3", // Add right margin on all sizes to avoid scrollbar collision
         className
       )}
       tabIndex={0}

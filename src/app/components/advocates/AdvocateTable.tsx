@@ -103,7 +103,7 @@ export default function AdvocateTable({
       onSort={onSort}
       loading={loading}
       emptyMessage="No advocates found"
-      className={className}
+      className={`mr-3 ${className}`}
       keyExtractor={(advocate, index) => advocate.id || `advocate-${index}`}
     />
   );

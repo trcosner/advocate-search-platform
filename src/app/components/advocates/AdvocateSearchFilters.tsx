@@ -3,7 +3,6 @@
 import { useState, useCallback } from "react";
 import { AdvocateFilters, DegreeType } from "../../../types/advocate";
 import { inputStyles, cn } from "../../../utils/styles";
-import FilterTags from "../shared/filters/FilterTags";
 import CustomSelect from "../shared/form/CustomSelect";
 
 interface AdvocateSearchFiltersProps {
@@ -27,7 +26,6 @@ export default function AdvocateSearchFilters({
 
   return (
       <div className="space-y-4">
-        {/* Filter Controls */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-neutral-700 mb-1.5">
