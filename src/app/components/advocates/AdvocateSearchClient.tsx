@@ -80,7 +80,7 @@ export default function AdvocateSearchClient({
   if (error) {
     return (
       <div className="p-6 text-center">
-        <div className="text-red-600 mb-4">
+        <div className="text-error-600 mb-4">
           <p className="text-lg font-semibold">Error: {error}</p>
         </div>
         <button 
@@ -100,7 +100,7 @@ export default function AdvocateSearchClient({
     <div className="h-full flex flex-col">
       <div className="flex-shrink-0 space-y-6 pb-6">
         <div>
-          <h1 className="text-xl font-bold text-primary-700 mb-6">Advocates</h1>
+          <h2 className="text-xl font-bold text-primary-700 mb-4">Advocates</h2>
           
           <SearchControls
             searchValue={localSearchTerm}
@@ -110,9 +110,6 @@ export default function AdvocateSearchClient({
             searchPlaceholder="Search by name, city, or specialty"
             searchLoading={loading}
             searchDisabled={loading}
-            resultsPerPage={searchParams.limit || 10}
-            onResultsPerPageChange={handleLimitChange}
-            resultsPerPageDisabled={loading}
           />
         </div>
 
@@ -130,6 +127,8 @@ export default function AdvocateSearchClient({
             totalPages={pagination?.totalPages || 1}
             resultsPerPage={pagination?.limit || 10}
             loading={loading}
+            onResultsPerPageChange={handleLimitChange}
+            resultsPerPageDisabled={loading}
           />
         )}
       </div>
@@ -142,8 +141,6 @@ export default function AdvocateSearchClient({
           searchQuery={searchParams.query}
           onPageChange={handlePageChange}
           emptySearchMessage="No advocates found matching &quot;{query}&quot;"
-          showPaginationTop={true}
-          showPaginationBottom={true}
           className="h-full"
         >
           <AdvocateResultsView

@@ -1,5 +1,8 @@
 "use client";
 
+import { cn } from "@/utils/styles";
+import CustomSelect from "../form/CustomSelect";
+
 interface SearchStatsProps {
   query?: string;
   totalResults?: number;
@@ -8,6 +11,10 @@ interface SearchStatsProps {
   resultsPerPage?: number;
   loading?: boolean;
   className?: string;
+  
+  onResultsPerPageChange?: (limit: number) => void;
+  resultsPerPageOptions?: number[];
+  resultsPerPageDisabled?: boolean;
 }
 
 export default function SearchStats({
@@ -17,7 +24,11 @@ export default function SearchStats({
   totalPages = 1,
   resultsPerPage = 10,
   loading = false,
-  className = ""
+  className = "",
+  
+  onResultsPerPageChange,
+  resultsPerPageOptions = [5, 10, 20, 50],
+  resultsPerPageDisabled = false
 }: SearchStatsProps) {
   const startResult = totalResults > 0 ? ((currentPage - 1) * resultsPerPage) + 1 : 0;
   const endResult = Math.min(currentPage * resultsPerPage, totalResults);
@@ -70,8 +81,25 @@ export default function SearchStats({
       </div>
 
       {totalResults > 0 && (
-        <div className="text-xs text-neutral-500 sm:text-sm">
-          {resultsPerPage} per page
+        <div className="flex items-center gap-3 text-xs text-neutral-500 sm:text-sm">
+          {onResultsPerPageChange ? (
+            <div className="flex items-center gap-2">
+              <span>Show:</span>
+              <CustomSelect
+                value={resultsPerPage.toString()}
+                onChange={(value) => onResultsPerPageChange(Number(value))}
+                options={resultsPerPageOptions.map(option => ({
+                  value: option.toString(),
+                  label: option.toString()
+                }))}
+                disabled={resultsPerPageDisabled || loading}
+                className="w-20"
+              />
+              <span>per page</span>
+            </div>
+          ) : (
+            <span>{resultsPerPage} per page</span>
+          )}
         </div>
       )}
     </div>

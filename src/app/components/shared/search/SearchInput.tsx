@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback, ChangeEvent, KeyboardEvent } from "react";
 import { buttonStyles, inputStyles, cn } from "@/utils/styles";
+import CloseIcon from "../icons/CloseIcon";
+import { useDebounce } from "../../../../hooks/useDebounce";
 
 interface SearchInputProps {
   value: string;
@@ -26,26 +28,24 @@ export default function SearchInput({
   disabled = false,
   className = ""
 }: SearchInputProps) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [inputValue, setInputValue] = useState(value);
+  const debouncedInputValue = useDebounce(inputValue, debounceMs);
 
-  // Debounce effect
+  // Update input when external value changes
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (debouncedValue !== value) {
-        onChange(debouncedValue);
-      }
-    }, debounceMs);
-
-    return () => clearTimeout(timer);
-  }, [debouncedValue, debounceMs, onChange, value]);
-
-  // Update local value when external value changes
-  useEffect(() => {
-    setDebouncedValue(value);
+    setInputValue(value);
   }, [value]);
 
+  // Trigger search when debounced value changes
+  useEffect(() => {
+    if (debouncedInputValue !== value) {
+      onChange(debouncedInputValue);
+      onSearch();
+    }
+  }, [debouncedInputValue, value, onChange, onSearch]);
+
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setDebouncedValue(e.target.value);
+    setInputValue(e.target.value);
   }, []);
 
   const handleKeyPress = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
@@ -56,7 +56,7 @@ export default function SearchInput({
   }, [onSearch]);
 
   const handleClear = useCallback(() => {
-    setDebouncedValue("");
+    setInputValue("");
     onClear();
   }, [onClear]);
 
@@ -65,34 +65,29 @@ export default function SearchInput({
   return (
     <div className={`relative flex gap-3 ${className}`}>
       <div className="relative flex-1">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        </div>
-        
         <input
           type="text"
-          value={debouncedValue}
+          value={inputValue}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
           placeholder={placeholder}
           disabled={disabled || loading}
           className={cn(
             inputStyles.base,
-            inputStyles.withIcon,
-            "text-sm font-medium"
+            "text-sm font-medium px-4 py-2.5",
+            showClear ? "pr-10" : "pr-4"
           )}
           aria-label="Search input"
         />
 
-        {showClear && (
+        {showClear && !loading && (
           <button
             onClick={handleClear}
             disabled={disabled}
-            className={cn(
-              buttonStyles.ghost,
-              "absolute inset-y-0 right-0 pr-3 flex items-center"
-            )}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-neutral-600 transition-colors"
             aria-label="Clear search"
           >
+            <CloseIcon className="h-4 w-4" />
           </button>
         )}
 
@@ -114,21 +109,6 @@ export default function SearchInput({
       >
         {loading ? "Searching..." : "Search"}
       </button>
-
-      {/* Clear All Button */}
-      {showClear && (
-        <button
-          onClick={handleClear}
-          disabled={disabled || loading}
-          className={cn(
-            buttonStyles.secondary,
-            "px-4 py-2.5 text-sm font-medium whitespace-nowrap"
-          )}
-          aria-label="Clear search"
-        >
-          Clear
-        </button>
-      )}
     </div>
   );
 }

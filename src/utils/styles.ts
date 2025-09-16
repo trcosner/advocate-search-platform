@@ -1,9 +1,4 @@
-/**
- * Tailwind utility functions for consistent styling patterns
- * Following DRY principles and Tailwind-centric approach
- */
 
-// Button styling utilities
 export const buttonStyles = {
   primary: `
     bg-primary-600 text-white rounded-lg
@@ -17,22 +12,18 @@ export const buttonStyles = {
     disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed
     transition-colors duration-200
   `,
-  ghost: `
-    text-neutral-400 hover:text-neutral-600
-    disabled:cursor-not-allowed
-    transition-colors duration-200
-  `,
   pagination: `
     px-3 py-2 text-sm font-medium
-    border border-neutral-300
+    border border-neutral-400
     bg-white text-neutral-700
-    hover:bg-neutral-50 hover:text-neutral-900
+    hover:bg-neutral-500 hover:text-white
     disabled:bg-neutral-50 disabled:text-neutral-400 disabled:cursor-not-allowed
     focus:ring-2 focus:ring-primary-500 focus:border-primary-500
     transition-colors duration-200
   `,
   paginationActive: `
-    bg-primary-600 text-white border-primary-600 z-10
+    bg-primary-600 text-primary-500 border-primary-600
+    hover:bg-primary-700 hover:border-primary-700
   `
 };
 

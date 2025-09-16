@@ -18,8 +18,6 @@ interface SearchResultsProps<T = any> {
   emptySearchMessage?: string;
   searchQuery?: string;
   onPageChange?: (page: number) => void;
-  showPaginationTop?: boolean;
-  showPaginationBottom?: boolean;
   className?: string;
   children: ReactNode;
 }
@@ -32,8 +30,6 @@ export default function SearchResults<T = any>({
   emptySearchMessage,
   searchQuery,
   onPageChange,
-  showPaginationTop = true,
-  showPaginationBottom = true,
   className = "",
   children
 }: SearchResultsProps<T>) {
@@ -67,25 +63,11 @@ export default function SearchResults<T = any>({
 
   return (
     <div className={`h-full flex flex-col ${className}`}>
-      {shouldShowPagination && showPaginationTop && (
-        <div className="flex-shrink-0 pb-4">
-          <Pagination
-            currentPage={pagination.page}
-            totalPages={pagination.totalPages}
-            totalResults={pagination.total}
-            resultsPerPage={pagination.limit}
-            onPageChange={onPageChange}
-            loading={loading}
-            showInfo={false}
-          />
-        </div>
-      )}
-
       <div className={`flex-1 min-h-0 overflow-y-auto ${loading ? "opacity-75 pointer-events-none" : ""}`}>
         {children}
       </div>
 
-      {shouldShowPagination && showPaginationBottom && (
+      {shouldShowPagination && (
         <div className="flex-shrink-0 pt-4">
           <Pagination
             currentPage={pagination.page}

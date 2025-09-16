@@ -2,6 +2,8 @@
 
 import PaginationInfo from "./PaginationInfo";
 import { buttonStyles, cn } from "@/utils/styles";
+import ChevronLeftIcon from "../icons/ChevronLeftIcon";
+import ChevronRightIcon from "../icons/ChevronRightIcon";
 
 interface PaginationProps {
   currentPage: number;
@@ -81,10 +83,11 @@ export default function Pagination({
             disabled={!hasPrev || loading}
             className={cn(
               buttonStyles.pagination,
-              "rounded-l-md"
+              "rounded-l-md border-l"
             )}
             aria-label="Previous page"
           >
+            <ChevronLeftIcon className="h-4 w-4" />
             <span className="sr-only">Previous</span>
           </button>
 
@@ -95,8 +98,7 @@ export default function Pagination({
               disabled={loading}
               className={cn(
                 buttonStyles.pagination,
-                "border-t border-b",
-                index === 0 ? '' : 'border-l-0',
+                index === 0 ? "border-l" : "",
                 pageNum === currentPage 
                   ? buttonStyles.paginationActive
                   : '',
@@ -114,10 +116,11 @@ export default function Pagination({
             disabled={!hasNext || loading}
             className={cn(
               buttonStyles.pagination,
-              "rounded-r-md border-l-0"
+              "rounded-r-md"
             )}
             aria-label="Next page"
           >
+            <ChevronRightIcon className="h-4 w-4" />
             <span className="sr-only">Next</span>
           </button>
         </nav>
