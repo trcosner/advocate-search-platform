@@ -21,14 +21,6 @@ export interface Advocate {
 }
 
 export interface AdvocateFilters {
-  // Good for filters (limited, predictable values)
   degree?: DegreeType;
   minExperience?: number;
-  // Removed: city (moved to general search)
-  // Removed: maxExperience (simplified to minExperience only)
-  // Removed: specialties (moved to general search)
 }
-
-export interface AdvocateSearchParams extends SearchRequest<AdvocateFilters> {}
-
-export type AdvocateResponse = ApiResponse<PaginatedResult<Advocate>>;

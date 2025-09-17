@@ -1,6 +1,6 @@
 "use client";
 
-import { Advocate } from "../../../types/api";
+import { Advocate } from "../../../types";
 import DataTable, { TableColumn } from "../shared/table/DataTable";
 
 interface AdvocateTableProps {

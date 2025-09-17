@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { advocateService } from "../../../services/advocate";
-import { AdvocateSearchParams, AdvocateResponse, DegreeType } from "../../../types/api";
+import { AdvocateSearchParams, AdvocateResponse, DegreeType } from "../../../types";
 
 export const dynamic = 'force-dynamic';
 

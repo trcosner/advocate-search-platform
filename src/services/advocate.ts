@@ -1,8 +1,8 @@
 import { and, or, ilike, gte, lte, sql, asc, desc, eq } from "drizzle-orm";
 import { DatabaseService } from "./database";
 import { advocates } from "../db/schema";
-import { SearchRequest } from "../types/search";
-import { Advocate, AdvocateFilters } from "../types/advocate";
+import { SearchRequest } from "../types";
+import { Advocate, AdvocateFilters } from "../types";
 
 export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> {
   constructor() {

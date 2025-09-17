@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { AdvocateFilters, DegreeType } from "../../../types/advocate";
+import { AdvocateFilters, DegreeType } from "../../../types";
 import { cn } from "@/app/utils/styles";
 import { useDebouncedCallback } from "../../hooks/useDebouncedCallback";
 import CustomSelect from "../shared/form/CustomSelect";

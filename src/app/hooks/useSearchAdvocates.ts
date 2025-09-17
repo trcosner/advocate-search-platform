@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRequest } from './useRequest';
-import { AdvocateSearchParams, PaginatedResult, Advocate } from '../../types/api';
+import { AdvocateSearchParams, PaginatedResult, Advocate } from '../../types';
 import { buildSearchQueryParams, buildUrlWithParams } from '../utils/queryParams';
 import { navigateWithSearchParams } from '../utils/navigation';
 import { mergeSearchParams } from '../utils/searchParams';

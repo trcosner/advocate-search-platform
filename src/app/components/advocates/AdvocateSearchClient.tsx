@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useSearchAdvocates } from "../../hooks/useSearchAdvocates";
-import { Advocate, AdvocateSearchParams, AdvocateFilters, PaginatedResult } from "../../../types/api";
+import { Advocate, AdvocateSearchParams, AdvocateFilters, PaginatedResult } from "../../../types";
 import AdvocateSearchFilters from "./AdvocateSearchFilters";
 import AdvocateResultsView from "./AdvocateResultsView";
 import SearchControls from "../shared/search/SearchControls";

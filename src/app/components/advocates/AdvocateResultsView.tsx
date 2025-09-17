@@ -1,6 +1,6 @@
 "use client";
 
-import { Advocate } from "@/types/advocate";
+import { Advocate } from "@/types";
 import AdvocateTable from "./AdvocateTable";
 import AdvocateCard from "./AdvocateCard";
 import AdvocateCardGrid from "./AdvocateCardGrid";

@@ -3,7 +3,7 @@
  * Handles merging and updating search parameters following immutability principles
  */
 
-import { AdvocateSearchParams } from '../../types/api';
+import { AdvocateSearchParams } from '../../types';
 
 /**
  * Merges partial search parameters with existing ones

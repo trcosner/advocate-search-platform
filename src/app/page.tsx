@@ -4,7 +4,7 @@
 
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import { AdvocateSearchParams, DegreeType } from "../types/api";
+import { AdvocateSearchParams, DegreeType } from "../types";
 import AdvocateSearchPage from "./components/advocates/AdvocateSearchPage";
 
 export default function HomePage() {
