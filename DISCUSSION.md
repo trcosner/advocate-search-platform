@@ -32,7 +32,7 @@
 
 ### Advanced Performance
 
-- **Redis caching layer** for search result optimization  
+- **Caching** for search result optimization I would cache backend with something like Redis or another in memory db, and I would add client side cache.
 - **CDN implementation** for global patient access
 - **DB Schema Changes** with more time I would create a specialties table and a advocate_specialties table. Also bigint for phoneNumber is ok since data provided was normalized to 5559872345 format, if we wanted to preserve special characters like 1-555-555-5555, we might want to change this to text
 - **Virtual scrolling** for massive advocate lists, though use by patients in a healthcare application could point to pagination being the better implementation for these users and the point of this list anyways.
