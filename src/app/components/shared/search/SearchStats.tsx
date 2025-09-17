@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/app/utils/styles";
 import CustomSelect from "../form/CustomSelect";
 
 interface SearchStatsProps {
@@ -35,10 +34,8 @@ export default function SearchStats({
 
   if (loading) {
     return (
-      <div className={`flex items-center gap-4 ${className}`}>
-        <div className="animate-pulse">
+      <div className={`flex items-center gap-4 animate-pulse ${className}`}>
           <div className="h-4 bg-neutral-200 rounded w-48"></div>
-        </div>
       </div>
     );
   }

@@ -1,8 +1,8 @@
 import { and, or, ilike, gte, lte, sql, asc, desc, eq } from "drizzle-orm";
 import { DatabaseService } from "./database";
 import { advocates } from "../db/schema";
-import { SearchRequest } from "../types/search";
-import { Advocate, AdvocateFilters } from "../types/advocate";
+import { SearchRequest } from "../types";
+import { Advocate, AdvocateFilters } from "../types";
 
 export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> {
   constructor() {
@@ -61,7 +61,7 @@ export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> 
               END
             )`
           ]),
-          // Stricter fuzzy search using similarity (requires pg_trgm extension)
+          // Fuzzy search using similarity (enabled by pg_trgm extension in migration)
           // Only match if similarity is high enough and query is long enough
           sql`(
             length(${query}) >= 4 AND (
@@ -74,9 +74,8 @@ export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> 
       );
     }
 
-    // Specific filters (limited, predictable values)
     if (degree) {
-      conditions.push(eq(advocates.degree, degree)); // Exact match for dropdown values
+      conditions.push(eq(advocates.degree, degree));
     }
 
     if (minExperience !== undefined) {
@@ -92,7 +91,6 @@ export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> 
     
     const orderByClauses = [];
     
-    // Check if sortBy is provided and is a valid column
     if (sortBy) {
       if (sortBy === 'firstName') {
         orderByClauses.push(orderFn(advocates.firstName));

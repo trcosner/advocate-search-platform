@@ -1,6 +1,6 @@
 "use client";
 
-import { Advocate } from "@/types/advocate";
+import { Advocate } from "../../../types";
 import Badge from "../shared/Badge";
 import { useCallback } from "react";
 import PhoneIcon from "../shared/icons/PhoneIcon";

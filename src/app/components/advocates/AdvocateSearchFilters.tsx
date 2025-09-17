@@ -1,12 +1,19 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { AdvocateFilters, DegreeType } from "../../../types/advocate";
+import { AdvocateFilters, DegreeType } from "../../../types";
 import { cn } from "@/app/utils/styles";
 import { useDebouncedCallback } from "../../hooks/useDebouncedCallback";
 import CustomSelect from "../shared/form/CustomSelect";
 import Input from "../shared/form/Input";
 import Button from "../shared/Button";
+
+const DEGREE_OPTIONS = [
+  { value: undefined, label: "All Degrees" },
+  { value: DegreeType.MD, label: "MD (Medical Doctor)" },
+  { value: DegreeType.PHD, label: "PhD (Doctor of Philosophy)" },
+  { value: DegreeType.MSW, label: "MSW (Master of Social Work)" }
+];
 
 interface AdvocateSearchFiltersProps {
   initialFilters?: AdvocateFilters;
@@ -23,33 +30,33 @@ export default function AdvocateSearchFilters({
 }: AdvocateSearchFiltersProps) {
   const [filters, setFilters] = useState<AdvocateFilters>(initialFilters);
 
-  // Debounced version of onFiltersChange specifically for minExperience
   const debouncedFiltersChange = useDebouncedCallback(onFiltersChange, 500);
 
   const handleFilterChange = useCallback((key: keyof AdvocateFilters, value: any) => {
     setFilters(prev => {
       const newFilters = { ...prev, [key]: value };
       
-      // Use debounced callback only for minExperience, immediate for others
-      if (key === 'minExperience') {
-        debouncedFiltersChange(newFilters);
-      } else {
-        onFiltersChange(newFilters);
-      }
+      // Schedule callback for next microtask to avoid render-time updates
+      queueMicrotask(() => {
+        if (key === 'minExperience') {
+          debouncedFiltersChange(newFilters);
+        } else {
+          onFiltersChange(newFilters);
+        }
+      });
       
       return newFilters;
     });
-  }, [onFiltersChange, debouncedFiltersChange]);
+  }, [debouncedFiltersChange, onFiltersChange]);
 
-  const handleClear = () => {
-    // Cancel any pending debounced search
+  const handleClear = useCallback(() => {
     debouncedFiltersChange.cancel();
     
-    const newFilters = {degree: undefined, minExperience: 0};
+    const newFilters = { degree: undefined, minExperience: 0 };
+    setFilters(newFilters);
     onFiltersChange(newFilters);
     onClear();
-    setFilters(newFilters);
-  };
+  }, [debouncedFiltersChange, onFiltersChange, onClear]);
 
   return (
       <div className="space-y-4">
@@ -61,12 +68,7 @@ export default function AdvocateSearchFilters({
             <CustomSelect
               value={filters.degree}
               onChange={(value) => handleFilterChange('degree', value as DegreeType | undefined)}
-              options={[
-                { value: undefined, label: "All Degrees" },
-                { value: DegreeType.MD, label: "MD (Medical Doctor)" },
-                { value: DegreeType.PHD, label: "PhD (Doctor of Philosophy)" },
-                { value: DegreeType.MSW, label: "MSW (Master of Social Work)" }
-              ]}
+              options={DEGREE_OPTIONS}
               placeholder="Select degree"
               disabled={disabled}
             />
@@ -81,7 +83,10 @@ export default function AdvocateSearchFilters({
                 type="number"
                 id="minExperience"
                 value={filters.minExperience ?? ""}
-                onChange={(e) => handleFilterChange('minExperience', e.target.value ? parseInt(e.target.value) : undefined)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  handleFilterChange('minExperience', value ? Number(value) : undefined);
+                }}
                 placeholder="0"
                 min="0"
                 max="50"

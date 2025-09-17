@@ -10,12 +10,6 @@ export interface ApiResponse<T> {
   timestamp?: string;
 }
 
-// Specific types for advocates
 export type AdvocateSearchParams = SearchRequest<AdvocateFilters>;
 export type AdvocateResponse = ApiResponse<PaginatedResult<Advocate>>;
 export type AdvocateDetailResponse = ApiResponse<Advocate>;
-
-// Re-export commonly used types
-export * from './pagination';
-export * from './search';
-export * from './advocate';

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/app/utils/styles";
 import { useTabTrap } from "../../../hooks/useTabTrap";
-import ChevronDownIcon from "../icons/ChevronDownIcon";
+import ChevronIcon from "../icons/ChevronIcon";
 
 interface Option {
   value: string | undefined;
@@ -87,11 +87,9 @@ export default function CustomSelect({
         <span className={!selectedOption ? "text-neutral-500" : ""}>
           {selectedOption?.label || placeholder}
         </span>
-        <ChevronDownIcon 
-          className={cn(
-            "h-4 w-4 text-neutral-400 transition-transform",
-            isOpen && "rotate-180"
-          )}
+        <ChevronIcon 
+          direction={isOpen ? "up" : "down"}
+          className="h-4 w-4 text-neutral-400"
         />
       </button>
 

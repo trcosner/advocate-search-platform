@@ -1,14 +1,5 @@
-/**
- * Search parameter utilities
- * Handles merging and updating search parameters following immutability principles
- */
+import { AdvocateSearchParams } from '../../types';
 
-import { AdvocateSearchParams } from '../../types/api';
-
-/**
- * Merges partial search parameters with existing ones
- * Ensures filters are properly merged and page resets for new searches
- */
 export function mergeSearchParams(
   current: AdvocateSearchParams,
   updates: Partial<AdvocateSearchParams>
@@ -25,9 +16,6 @@ export function mergeSearchParams(
   };
 }
 
-/**
- * Creates default search parameters
- */
 export function createDefaultSearchParams(): AdvocateSearchParams {
   return {
     page: 1,

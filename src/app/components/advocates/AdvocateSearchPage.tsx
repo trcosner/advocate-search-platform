@@ -3,7 +3,7 @@
 import { ErrorBoundary } from "../shared/ErrorBoundary";
 import AdvocateSearchClient from "./AdvocateSearchClient";
 import ErrorFallback from "../shared/ErrorFallback";
-import { AdvocateSearchParams, PaginatedResult, Advocate } from "../../../types/api";
+import { AdvocateSearchParams } from "../../../types";
 
 interface AdvocateSearchPageProps {
   initialSearchParams: AdvocateSearchParams;

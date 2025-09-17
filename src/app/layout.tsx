@@ -19,17 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="font-sans h-full overflow-hidden">
-        <div className="h-screen flex flex-col bg-neutral-50">
-          <header className="flex-shrink-0 bg-white border-b border-neutral-200">
-              <h1 className="text-2xl font-bold text-primary-700 px-6 py-4">Solace</h1>
-          </header>
-          <main className="flex-1 overflow-hidden">
-            <div className="h-full max-w-7xl mx-auto px-6 py-6">
-              {children}
-            </div>
-          </main>
-        </div>
+      <body className="h-screen flex flex-col bg-neutral-50 overflow-hidden">
+        <header className="flex-shrink-0 bg-white border-b border-neutral-200">
+            <h1 className="text-2xl font-bold text-primary-700 px-6 py-4">Solace</h1>
+        </header>
+        <main className="flex-1 overflow-hidden">
+          <div className="h-full max-w-7xl mx-auto px-6 py-6">
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   );
