@@ -22,6 +22,7 @@ export default function AdvocateSearchClient({
   const [localSearchTerm, setLocalSearchTerm] = useState(initialSearchParams.query || "")
   const { data, loading, error, searchParams, updateSearch } = useSearchAdvocates({
     initialData,
+    searchParams: initialSearchParams, // Pass search params to hook
   });
   const currentData = data || initialData;
   const advocates = currentData?.data || [];

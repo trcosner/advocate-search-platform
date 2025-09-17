@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { AdvocateFilters, DegreeType } from "../../../types/advocate";
 import { cn } from "@/app/utils/styles";
+import { useDebouncedCallback } from "../../hooks/useDebouncedCallback";
 import CustomSelect from "../shared/form/CustomSelect";
 import Input from "../shared/form/Input";
 import Button from "../shared/Button";
@@ -22,18 +23,33 @@ export default function AdvocateSearchFilters({
 }: AdvocateSearchFiltersProps) {
   const [filters, setFilters] = useState<AdvocateFilters>(initialFilters);
 
+  // Debounced version of onFiltersChange specifically for minExperience
+  const debouncedFiltersChange = useDebouncedCallback(onFiltersChange, 500);
+
   const handleFilterChange = useCallback((key: keyof AdvocateFilters, value: any) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    onFiltersChange(newFilters);
-  }, [filters, onFiltersChange]);
+    setFilters(prev => {
+      const newFilters = { ...prev, [key]: value };
+      
+      // Use debounced callback only for minExperience, immediate for others
+      if (key === 'minExperience') {
+        debouncedFiltersChange(newFilters);
+      } else {
+        onFiltersChange(newFilters);
+      }
+      
+      return newFilters;
+    });
+  }, [onFiltersChange, debouncedFiltersChange]);
 
   const handleClear = () => {
+    // Cancel any pending debounced search
+    debouncedFiltersChange.cancel();
+    
     const newFilters = {degree: undefined, minExperience: 0};
-    onFiltersChange(newFilters)
-    onClear()
-    setFilters(newFilters)
-  }
+    onFiltersChange(newFilters);
+    onClear();
+    setFilters(newFilters);
+  };
 
   return (
       <div className="space-y-4">
