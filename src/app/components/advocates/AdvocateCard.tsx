@@ -1,7 +1,6 @@
 "use client";
 
 import { Advocate } from "@/types/advocate";
-import { cn } from "@/utils/styles";
 import Badge from "../shared/Badge";
 import { useCallback } from "react";
 import PhoneIcon from "../shared/icons/PhoneIcon";
@@ -39,18 +38,16 @@ export default function AdvocateCard({ advocate, className = "" }: AdvocateCardP
 
   return (
     <div 
-      className={cn(
-        // Built-in card styles
-        "bg-white border border-neutral-200 rounded-lg p-6",
-        "hover:border-neutral-300 hover:shadow-md", 
-        "transition-all duration-200 ease-in-out",
-        // Interactive styles
-        "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
-        "hover:shadow-lg focus:shadow-lg",
-        "flex flex-col min-h-[200px]", // Minimum height with flexible growth
-        "mr-3", // Add right margin on all sizes to avoid scrollbar collision
-        className
-      )}
+      className={`
+        bg-white border border-neutral-200 rounded-lg p-6
+        hover:border-neutral-300 hover:shadow-lg 
+        transition-all duration-200 ease-in-out
+        cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+        focus:shadow-lg
+        flex flex-col min-h-[200px]
+        mr-3
+        ${className}
+      `}
       tabIndex={0}
       role="button"
       aria-label={`Contact ${advocate.firstName} ${advocate.lastName}, ${advocate.degree} in ${advocate.city}. Phone: ${formatPhoneNumber(advocate.phoneNumber)}`}

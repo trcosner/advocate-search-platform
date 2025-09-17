@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { AdvocateFilters, DegreeType } from "../../../types/advocate";
-import { cn } from "../../../utils/styles";
+import { cn } from "@/app/utils/styles";
 import CustomSelect from "../shared/form/CustomSelect";
 import Input from "../shared/form/Input";
 import Button from "../shared/Button";

@@ -1,4 +1,4 @@
-import { cn } from "@/utils/styles";
+import { cn } from "@/app/utils/styles";
 import Button from "./Button";
 
 interface ErrorFallbackProps {

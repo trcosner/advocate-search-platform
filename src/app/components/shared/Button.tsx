@@ -1,4 +1,4 @@
-import { cn } from "@/utils/styles";
+import { cn } from "@/app/utils/styles";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 type ButtonVariant = "primary" | "secondary";

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/utils/styles";
+import { cn } from "@/app/utils/styles";
 import CustomSelect from "../form/CustomSelect";
 
 interface SearchStatsProps {

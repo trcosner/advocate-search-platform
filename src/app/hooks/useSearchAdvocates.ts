@@ -1,7 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useRequest } from './useRequest';
-import { AdvocateSearchParams, PaginatedResult, Advocate, DegreeType } from '../types/api';
+import { AdvocateSearchParams, PaginatedResult, Advocate, DegreeType } from '../../types/api';
 
 export interface UseSearchAdvocatesOptions {
   initialData?: PaginatedResult<Advocate>;
@@ -20,8 +20,8 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions = {}) {
     },
   });
 
-  // Parse current URL search params
-  const parseSearchParams = useCallback((): AdvocateSearchParams => {
+  // Parse current URL search params - memoized for performance
+  const currentSearchParams = useMemo((): AdvocateSearchParams => {
     // Validate degree parameter
     const degreeParam = searchParams.get('degree');
     const degree = degreeParam && Object.values(DegreeType).includes(degreeParam as DegreeType)
@@ -69,7 +69,7 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions = {}) {
 
   // Update URL and trigger search
   const updateSearch = useCallback((newParams: Partial<AdvocateSearchParams>) => {
-    const currentParams = parseSearchParams();
+    const currentParams = currentSearchParams;
     const updatedParams: AdvocateSearchParams = {
       ...currentParams,
       ...newParams,
@@ -97,7 +97,7 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions = {}) {
     // Update URL without page reload
     const newUrl = `/?${urlParams.toString()}`;
     router.push(newUrl, { scroll: false });
-  }, [parseSearchParams, router]);
+  }, [currentSearchParams, router]);
 
   // Initialize with SSR data if provided
   useEffect(() => {
@@ -110,7 +110,7 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions = {}) {
     data: data || options.initialData || null,
     loading,
     error,
-    searchParams: parseSearchParams(),
+    searchParams: currentSearchParams,
     updateSearch,
     searchAdvocates,
   };

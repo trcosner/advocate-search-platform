@@ -8,7 +8,7 @@ export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> 
   constructor() {
     super({
       table: advocates as any, // Type cast to work around Drizzle generic typing
-      defaultSortColumn: 'createdAt',
+      defaultSortColumn: 'yearsOfExperience',
       defaultLimit: 10,
       maxLimit: 100,
     });

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { cn } from "@/utils/styles";
-import { useTabTrap } from "../../../../hooks/useTabTrap";
+import { cn } from "@/app/utils/styles";
+import { useTabTrap } from "../../../hooks/useTabTrap";
 import ChevronDownIcon from "../icons/ChevronDownIcon";
 
 interface Option {
@@ -73,21 +73,14 @@ export default function CustomSelect({
   }, [isOpen, value, options]);
 
   return (
-    <div ref={dropdownRef} className={cn("relative", className)}>
+    <div ref={dropdownRef} className={`relative ${className}`}>
       <button
         ref={triggerRef}
         type="button"
         onClick={handleToggle}
         disabled={disabled}
         data-trigger="true"
-        className={cn(
-          "w-full appearance-none bg-white border border-neutral-300 rounded-lg",
-          "px-3 py-2 text-sm font-medium text-neutral-700 text-left",
-          "focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-          "disabled:bg-neutral-50 disabled:text-neutral-400 disabled:cursor-not-allowed",
-          "transition-colors duration-200",
-          "flex items-center justify-between"
-        )}
+        className="w-full appearance-none bg-white border border-neutral-300 rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 text-left focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-50 disabled:text-neutral-400 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-between"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >

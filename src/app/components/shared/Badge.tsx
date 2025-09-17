@@ -1,4 +1,3 @@
-import { cn } from "@/utils/styles";
 import { HTMLAttributes } from "react";
 
 type BadgeVariant = "primary" | "neutral";
@@ -21,7 +20,7 @@ const badgeVariants = {
 
 export default function Badge({ variant = "primary", children, className, ...props }: BadgeProps) {
   return (
-    <span className={cn(badgeVariants[variant], className)} {...props}>
+    <span className={`${badgeVariants[variant]} ${className || ""}`} {...props}>
       {children}
     </span>
   );

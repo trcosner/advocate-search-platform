@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useSearchAdvocates } from "../../../hooks/useSearchAdvocates";
+import { useSearchAdvocates } from "../../hooks/useSearchAdvocates";
 import { Advocate, AdvocateSearchParams, AdvocateFilters, PaginatedResult } from "../../../types/api";
 import AdvocateSearchFilters from "./AdvocateSearchFilters";
 import AdvocateResultsView from "./AdvocateResultsView";
@@ -9,7 +9,6 @@ import SearchControls from "../shared/search/SearchControls";
 import SearchStats from "../shared/search/SearchStats";
 import SearchResults from "../shared/search/SearchResults";
 import ErrorFallback from "../shared/ErrorFallback";
-import { cn } from "@/utils/styles";
 
 interface AdvocateSearchClientProps {
   initialData?: PaginatedResult<Advocate>;
@@ -20,7 +19,7 @@ export default function AdvocateSearchClient({
   initialData, 
   initialSearchParams 
 }: AdvocateSearchClientProps) {
-  const [localSearchTerm, setLocalSearchTerm] = useState(initialSearchParams.query || "");
+  const [localSearchTerm, setLocalSearchTerm] = useState(initialSearchParams.query || "")
   const { data, loading, error, searchParams, updateSearch } = useSearchAdvocates({
     initialData,
   });

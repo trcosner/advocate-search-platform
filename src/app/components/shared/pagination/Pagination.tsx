@@ -2,7 +2,7 @@
 
 import PaginationInfo from "./PaginationInfo";
 import PaginationButton from "./PaginationButton";
-import { cn } from "@/utils/styles";
+import { cn } from "@/app/utils/styles";
 import ChevronLeftIcon from "../icons/ChevronLeftIcon";
 import ChevronRightIcon from "../icons/ChevronRightIcon";
 
@@ -95,10 +95,7 @@ export default function Pagination({
               onClick={() => onPageChange(pageNum)}
               disabled={loading}
               isActive={pageNum === currentPage}
-              className={cn(
-                index === 0 ? "border-l" : "",
-                "disabled:cursor-not-allowed disabled:opacity-50"
-              )}
+              className={`${index === 0 ? "border-l" : ""} disabled:cursor-not-allowed disabled:opacity-50`}
               aria-label={`Page ${pageNum}`}
               aria-current={pageNum === currentPage ? 'page' : undefined}
             >

@@ -1,5 +1,4 @@
 import { InputHTMLAttributes, forwardRef } from "react";
-import { cn } from "@/utils/styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
@@ -16,7 +15,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         ref={ref}
-        className={cn(inputStyles, className)}
+        className={`${inputStyles} ${className || ""}`}
         {...props}
       />
     );

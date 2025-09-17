@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, ChangeEvent, KeyboardEvent } from "react";
-import { cn } from "@/utils/styles";
+import { cn } from "@/app/utils/styles";
 import Button from "../Button";
 import Input from "../form/Input";
 import CloseIcon from "../icons/CloseIcon";
