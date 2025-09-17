@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { AdvocateFilters, DegreeType } from "../../../types";
 import { cn } from "@/app/utils/styles";
 import { useDebouncedCallback } from "../../hooks/useDebouncedCallback";
@@ -23,26 +23,22 @@ export default function AdvocateSearchFilters({
 }: AdvocateSearchFiltersProps) {
   const [filters, setFilters] = useState<AdvocateFilters>(initialFilters);
 
-  // Debounced version of onFiltersChange specifically for minExperience
   const debouncedFiltersChange = useDebouncedCallback(onFiltersChange, 500);
 
   const handleFilterChange = useCallback((key: keyof AdvocateFilters, value: any) => {
-    setFilters(prev => {
-      const newFilters = { ...prev, [key]: value };
-      
-      // Use debounced callback only for minExperience, immediate for others
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    
+    setTimeout(() => {
       if (key === 'minExperience') {
         debouncedFiltersChange(newFilters);
       } else {
         onFiltersChange(newFilters);
       }
-      
-      return newFilters;
-    });
-  }, [onFiltersChange, debouncedFiltersChange]);
+    }, 0);
+  }, [filters, onFiltersChange, debouncedFiltersChange]);
 
   const handleClear = () => {
-    // Cancel any pending debounced search
     debouncedFiltersChange.cancel();
     
     const newFilters = {degree: undefined, minExperience: 0};

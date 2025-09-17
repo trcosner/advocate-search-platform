@@ -1,7 +1,5 @@
 'use client';
 
-"use client";
-
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { AdvocateSearchParams, DegreeType } from "../types";
@@ -15,7 +13,6 @@ export default function HomePage() {
     ? Object.values(DegreeType).find(d => d.toLowerCase() === degreeParam.toLowerCase()) 
     : undefined;
 
-  // Parse search params for the API call - always set up search params even if empty
   const advocateSearchParams: AdvocateSearchParams = {
     page: searchParams.get('page') ? Number(searchParams.get('page')) : undefined,
     limit: searchParams.get('limit') ? Number(searchParams.get('limit')) : undefined,
