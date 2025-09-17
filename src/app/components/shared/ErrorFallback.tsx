@@ -1,4 +1,3 @@
-import { cn } from "@/app/utils/styles";
 import Button from "./Button";
 
 interface ErrorFallbackProps {
@@ -24,7 +23,7 @@ export default function ErrorFallback({
             {title}
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">
-            {message}
+            {error || message}
           </p>
         </div>
 

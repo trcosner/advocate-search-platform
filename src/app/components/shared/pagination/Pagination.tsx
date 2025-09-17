@@ -2,7 +2,6 @@
 
 import PaginationInfo from "./PaginationInfo";
 import PaginationButton from "./PaginationButton";
-import { cn } from "@/app/utils/styles";
 import ChevronIcon from "../icons/ChevronIcon";
 
 interface PaginationProps {
@@ -31,7 +30,6 @@ export default function Pagination({
   const hasNext = currentPage < totalPages;
   const hasPrev = currentPage > 1;
 
-  // Generate visible page numbers
   const getPageNumbers = () => {
     const pages = [];
     let start = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));

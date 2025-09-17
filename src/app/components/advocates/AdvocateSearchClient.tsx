@@ -5,7 +5,7 @@ import { useSearchAdvocates } from "../../hooks/useSearchAdvocates";
 import { Advocate, AdvocateSearchParams, AdvocateFilters, PaginatedResult } from "../../../types";
 import AdvocateSearchFilters from "./AdvocateSearchFilters";
 import AdvocateResultsView from "./AdvocateResultsView";
-import SearchControls from "../shared/search/SearchControls";
+import SearchInput from "../shared/search/SearchInput";
 import SearchStats from "../shared/search/SearchStats";
 import SearchResults from "../shared/search/SearchResults";
 import ErrorFallback from "../shared/ErrorFallback";
@@ -24,7 +24,6 @@ export default function AdvocateSearchClient({
     searchParams: initialSearchParams, // Pass search params to hook
   });
   
-  // Don't fallback to empty array if data is null - let SearchResults handle the null case
   const currentData = data || initialData;
   const advocates = currentData?.data || [];
   const pagination = currentData?.pagination;
@@ -105,39 +104,38 @@ export default function AdvocateSearchClient({
   return (
     <div className="h-full flex flex-col">
       <div className="flex-shrink-0 space-y-6 pb-6">
-        <div>
           <h2 className="text-xl font-bold text-primary-700 mb-4">Advocates</h2>
           
-          <SearchControls
-            searchValue={localSearchTerm}
-            onSearchChange={handleSearchChange}
+          <SearchInput
+            value={localSearchTerm}
+            onChange={handleSearchChange}
             onSearch={handleSearchSubmit}
             onClear={handleResetSearch}
-            searchPlaceholder="Search by name, city, or specialty"
-            searchLoading={loading}
-            searchDisabled={loading}
-          />
-        </div>
-
-        <AdvocateSearchFilters
-          initialFilters={searchParams.filters || {}}
-          onClear={handleReset}
-          onFiltersChange={handleFiltersChange}
-          disabled={loading}
-        />
-
-        {(searchParams.query || (pagination && pagination.total > 0)) && (
-          <SearchStats
-            query={searchParams.query}
-            totalResults={pagination?.total || 0}
-            currentPage={pagination?.page || 1}
-            totalPages={pagination?.totalPages || 1}
-            resultsPerPage={pagination?.limit || 10}
+            placeholder="Search by name, city, or specialty"
             loading={loading}
-            onResultsPerPageChange={handleLimitChange}
-            resultsPerPageDisabled={loading}
+            disabled={loading}
           />
-        )}
+        
+
+          <AdvocateSearchFilters
+            initialFilters={searchParams.filters || {}}
+            onClear={handleReset}
+            onFiltersChange={handleFiltersChange}
+            disabled={loading}
+          />
+
+          {(searchParams.query || (pagination && pagination.total > 0)) && (
+            <SearchStats
+              query={searchParams.query}
+              totalResults={pagination?.total || 0}
+              currentPage={pagination?.page || 1}
+              totalPages={pagination?.totalPages || 1}
+              resultsPerPage={pagination?.limit || 10}
+              loading={loading}
+              onResultsPerPageChange={handleLimitChange}
+              resultsPerPageDisabled={loading}
+            />
+          )}
       </div>
 
       <div className="flex-1 min-h-0">

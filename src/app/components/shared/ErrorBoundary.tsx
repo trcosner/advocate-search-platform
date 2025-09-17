@@ -13,7 +13,6 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-// Error Boundaries must be class components - React doesn't support functional error boundaries
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);

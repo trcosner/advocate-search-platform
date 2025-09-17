@@ -29,7 +29,6 @@ export default function SearchInput({
 }: SearchInputProps) {
   const [inputValue, setInputValue] = useState(value);
 
-  // Update input when external value changes
   useEffect(() => {
     setInputValue(value);
   }, [value]);
@@ -37,7 +36,7 @@ export default function SearchInput({
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
-    onChange(newValue); // Update parent state but don't trigger search
+    onChange(newValue);
   }, [onChange]);
 
   const handleKeyPress = useCallback((e: KeyboardEvent<HTMLInputElement>) => {

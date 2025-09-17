@@ -1,6 +1,6 @@
 "use client";
 
-import { Advocate } from "@/types";
+import { Advocate } from "../../../types";
 import AdvocateTable from "./AdvocateTable";
 import AdvocateCard from "./AdvocateCard";
 import AdvocateCardGrid from "./AdvocateCardGrid";
@@ -24,7 +24,6 @@ export default function AdvocateResultsView({
   className = ""
 }: AdvocateResultsViewProps) {
   
-  // Show loading spinner when loading with no existing data
   if (loading && advocates.length === 0) {
     return (
       <div className={className}>
@@ -39,7 +38,6 @@ export default function AdvocateResultsView({
 
   return (
     <div className={`${className} relative`}>
-      {/* Loading overlay for when data exists but is refreshing */}
       {loading && advocates.length > 0 && (
         <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex items-center justify-center">
           <div className="flex items-center gap-3 bg-white rounded-lg px-4 py-2 shadow-lg border border-neutral-200">
@@ -48,7 +46,6 @@ export default function AdvocateResultsView({
           </div>
         </div>
       )}
-      {/* Desktop Table View (lg+ breakpoint) */}
       <div className="hidden lg:block h-full">
         <AdvocateTable
           advocates={advocates}
@@ -60,7 +57,6 @@ export default function AdvocateResultsView({
         />
       </div>
 
-      {/* Mobile/Tablet Card Grid View (< lg breakpoint) */}
       <div className="lg:hidden">
         {advocates.length > 0 ? (
           <AdvocateCardGrid>

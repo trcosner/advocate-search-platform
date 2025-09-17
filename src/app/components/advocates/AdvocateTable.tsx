@@ -69,8 +69,8 @@ export default function AdvocateTable({
       key: 'phoneNumber',
       label: 'Phone',
       sortable: false,
-      className: 'w-40 min-w-[10rem]', // Give phone column more space
-      headerClassName: 'w-40 min-w-[10rem]', // Apply same width to header
+      className: 'w-40 min-w-[10rem]',
+      headerClassName: 'w-40 min-w-[10rem]',
       render: (advocate: Advocate) => {
         const formatPhoneNumber = (phone: number): string => {
           const phoneStr = phone.toString();
