@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRequest } from './useRequest';
 import { AdvocateSearchParams, PaginatedResult, Advocate } from '../../types';
@@ -16,6 +16,9 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions) {
   
   // Use component-provided search params, no URL parsing
   const [currentSearchParams, setCurrentSearchParams] = useState<AdvocateSearchParams>(options.searchParams);
+  
+  // Capture initial search params to avoid stale closure in useEffect
+  const initialSearchParamsRef = useRef(options.searchParams);
 
   const { data, loading, error, execute } = useRequest<PaginatedResult<Advocate>>({
     onSuccess: (data) => {
@@ -51,8 +54,8 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions) {
 
   // Always fetch data on mount and when search params change
   useEffect(() => {
-    searchAdvocates(currentSearchParams);
-  }, []); // Only run once on mount with initial search params
+    searchAdvocates(initialSearchParamsRef.current);
+  }, [searchAdvocates]); // Only run once on mount with initial search params
 
   return {
     data: data || null,

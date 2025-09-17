@@ -28,7 +28,7 @@ export function useDebouncedCallback<T extends (...args: any[]) => void>(
   }, []);
 
   const debouncedCallback = useCallback(
-    ((...args: Parameters<T>) => {
+    (...args: Parameters<T>) => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -36,9 +36,9 @@ export function useDebouncedCallback<T extends (...args: any[]) => void>(
       timeoutRef.current = setTimeout(() => {
         callbackRef.current(...args);
       }, delay);
-    }) as T,
+    },
     [delay]
-  );
+  ) as T;
 
   // Add cancel method to clear pending calls
   const cancel = useCallback(() => {
