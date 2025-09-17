@@ -8,7 +8,8 @@ import AdvocateResultsView from "./AdvocateResultsView";
 import SearchControls from "../shared/search/SearchControls";
 import SearchStats from "../shared/search/SearchStats";
 import SearchResults from "../shared/search/SearchResults";
-import { buttonStyles, cn } from "@/utils/styles";
+import ErrorFallback from "../shared/ErrorFallback";
+import { cn } from "@/utils/styles";
 
 interface AdvocateSearchClientProps {
   initialData?: PaginatedResult<Advocate>;
@@ -87,20 +88,13 @@ export default function AdvocateSearchClient({
 
   if (error) {
     return (
-      <div className="p-6 text-center">
-        <div className="text-error-600 mb-4">
-          <p className="text-lg font-semibold">Error: {error}</p>
-        </div>
-        <button 
-          onClick={() => window.location.reload()}
-          className={cn(
-            buttonStyles.primary,
-            "px-4 py-2"
-          )}
-        >
-          Retry
-        </button>
-      </div>
+      <ErrorFallback
+        error={error}
+        resetErrorBoundary={() => window.location.reload()}
+        title="Unable to search advocates"
+        message="We're having trouble searching for advocates. Please try again."
+        buttonText="Retry"
+      />
     );
   }
 

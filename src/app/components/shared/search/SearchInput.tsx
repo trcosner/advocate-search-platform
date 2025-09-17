@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback, ChangeEvent, KeyboardEvent } from "react";
-import { buttonStyles, inputStyles, cn } from "@/utils/styles";
+import { cn } from "@/utils/styles";
+import Button from "../Button";
+import Input from "../form/Input";
 import CloseIcon from "../icons/CloseIcon";
 
 interface SearchInputProps {
@@ -55,7 +57,7 @@ export default function SearchInput({
   return (
     <div className={`relative flex gap-3 ${className}`}>
       <div className="relative flex-1">
-        <input
+        <Input
           type="text"
           value={inputValue}
           onChange={handleInputChange}
@@ -63,7 +65,6 @@ export default function SearchInput({
           placeholder={placeholder}
           disabled={disabled || loading}
           className={cn(
-            inputStyles.base,
             "text-sm font-medium px-4 py-2.5",
             showClear ? "pr-10" : "pr-4"
           )}
@@ -88,17 +89,16 @@ export default function SearchInput({
         )}
       </div>
 
-      <button
+      <Button
         onClick={onSearch}
         disabled={disabled || loading}
-        className={cn(
-          buttonStyles.primary,
-          "px-4 py-2.5 text-sm font-medium whitespace-nowrap"
-        )}
+        variant="primary"
+        size="md"
+        className="whitespace-nowrap"
         aria-label="Search"
       >
         {loading ? "Searching..." : "Search"}
-      </button>
+      </Button>
     </div>
   );
 }

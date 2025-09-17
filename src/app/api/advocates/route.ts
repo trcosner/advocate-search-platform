@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { advocateService } from "../services/advocate";
+import { advocateService } from "../../../services/advocate";
 import { AdvocateSearchParams, AdvocateResponse, DegreeType } from "../../../types/api";
 
 export const dynamic = 'force-dynamic';

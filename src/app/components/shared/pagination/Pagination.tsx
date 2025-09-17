@@ -1,7 +1,8 @@
 "use client";
 
 import PaginationInfo from "./PaginationInfo";
-import { buttonStyles, cn } from "@/utils/styles";
+import PaginationButton from "./PaginationButton";
+import { cn } from "@/utils/styles";
 import ChevronLeftIcon from "../icons/ChevronLeftIcon";
 import ChevronRightIcon from "../icons/ChevronRightIcon";
 
@@ -78,51 +79,42 @@ export default function Pagination({
         )}
 
         <nav className="flex items-center justify-center sm:justify-end gap-1" aria-label="Pagination">
-          <button
+          <PaginationButton
             onClick={() => onPageChange(currentPage - 1)}
             disabled={!hasPrev || loading}
-            className={cn(
-              buttonStyles.pagination,
-              "rounded-l-md border-l"
-            )}
+            className="rounded-l-md border-l"
             aria-label="Previous page"
           >
             <ChevronLeftIcon className="h-4 w-4" />
             <span className="sr-only">Previous</span>
-          </button>
+          </PaginationButton>
 
           {pageNumbers.map((pageNum, index) => (
-            <button
+            <PaginationButton
               key={pageNum}
               onClick={() => onPageChange(pageNum)}
               disabled={loading}
+              isActive={pageNum === currentPage}
               className={cn(
-                buttonStyles.pagination,
                 index === 0 ? "border-l" : "",
-                pageNum === currentPage 
-                  ? buttonStyles.paginationActive
-                  : '',
                 "disabled:cursor-not-allowed disabled:opacity-50"
               )}
               aria-label={`Page ${pageNum}`}
               aria-current={pageNum === currentPage ? 'page' : undefined}
             >
               {pageNum}
-            </button>
+            </PaginationButton>
           ))}
 
-          <button
+          <PaginationButton
             onClick={() => onPageChange(currentPage + 1)}
             disabled={!hasNext || loading}
-            className={cn(
-              buttonStyles.pagination,
-              "rounded-r-md"
-            )}
+            className="rounded-r-md"
             aria-label="Next page"
           >
             <ChevronRightIcon className="h-4 w-4" />
             <span className="sr-only">Next</span>
-          </button>
+          </PaginationButton>
         </nav>
       </div>
     </div>

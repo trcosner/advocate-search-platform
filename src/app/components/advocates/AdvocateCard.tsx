@@ -1,7 +1,8 @@
 "use client";
 
 import { Advocate } from "@/types/advocate";
-import { cardStyles, badgeStyles, cn } from "@/utils/styles";
+import { cn } from "@/utils/styles";
+import Badge from "../shared/Badge";
 import { useCallback } from "react";
 import PhoneIcon from "../shared/icons/PhoneIcon";
 
@@ -39,7 +40,11 @@ export default function AdvocateCard({ advocate, className = "" }: AdvocateCardP
   return (
     <div 
       className={cn(
-        cardStyles.base, 
+        // Built-in card styles
+        "bg-white border border-neutral-200 rounded-lg p-6",
+        "hover:border-neutral-300 hover:shadow-md", 
+        "transition-all duration-200 ease-in-out",
+        // Interactive styles
         "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
         "hover:shadow-lg focus:shadow-lg",
         "flex flex-col min-h-[200px]", // Minimum height with flexible growth
@@ -53,19 +58,19 @@ export default function AdvocateCard({ advocate, className = "" }: AdvocateCardP
       onKeyDown={handleKeyDown}
     >
       {/* Header section */}
-      <div className="flex items-start justify-between mb-4">
+      <div className="mb-4">
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-semibold text-neutral-900 truncate">
             {advocate.firstName} {advocate.lastName}, {advocate.degree}
           </h3>
-          <p className="text-sm text-neutral-600 mt-1">
-            {advocate.city}
-          </p>
-        </div>
-        <div className="ml-3 flex-shrink-0">
-          <span className={badgeStyles.primary}>
-            {formatYearsExperience(advocate.yearsOfExperience)}
-          </span>
+          <div className="flex items-center justify-between mt-1">
+            <p className="text-sm text-neutral-600">
+              {advocate.city}
+            </p>
+            <Badge variant="primary">
+              {formatYearsExperience(advocate.yearsOfExperience)}
+            </Badge>
+          </div>
         </div>
       </div>
 
@@ -73,31 +78,30 @@ export default function AdvocateCard({ advocate, className = "" }: AdvocateCardP
       <div className="flex-1 mb-6">
         <div className="flex flex-wrap gap-1.5">
           {visibleSpecialties.map((specialty, index) => (
-            <span
+            <Badge
               key={index}
-              className={badgeStyles.neutral}
+              variant="neutral"
             >
               {specialty}
-            </span>
+            </Badge>
           ))}
           {remainingCount > 0 && (
-            <span
-              className={cn(badgeStyles.neutral, "bg-neutral-300 text-neutral-600 cursor-help")}
+            <Badge
+              variant="neutral"
+              className="bg-neutral-300 text-neutral-600 cursor-help"
               title={`${remainingCount} more specialties: ${advocate.specialties.slice(maxVisibleSpecialties).join(', ')}`}
             >
               +{remainingCount} more
-            </span>
+            </Badge>
           )}
         </div>
       </div>
 
       {/* Footer section - always at bottom with consistent spacing */}
       <div className="pt-4 border-t border-neutral-100 mt-auto">
-        <div className="flex items-center justify-between text-sm text-neutral-600">
-          <div className="flex items-center">
-            <PhoneIcon className="h-4 w-4 mr-2 text-neutral-400" />
-            <span>{formatPhoneNumber(advocate.phoneNumber)}</span>
-          </div>
+        <div className="flex items-center text-sm text-neutral-600">
+          <PhoneIcon className="h-4 w-4 mr-2 text-neutral-400" />
+          <span>{formatPhoneNumber(advocate.phoneNumber)}</span>
         </div>
       </div>
     </div>

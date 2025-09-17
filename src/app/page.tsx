@@ -1,7 +1,7 @@
 import React from "react";
-import { advocateService } from "./api/services/advocate";
+import { advocateService } from "../services/advocate";
 import { AdvocateSearchParams, DegreeType } from "../types/api";
-import AdvocateSearchWrapper from "./components/advocates/AdvocateSearchWrapper";
+import AdvocateSearchPage from "./components/advocates/AdvocateSearchPage";
 
 
 interface PageProps {
@@ -54,7 +54,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <AdvocateSearchWrapper 
+      <AdvocateSearchPage 
         initialData={initialData}
         initialSearchParams={advocateSearchParams}
       />

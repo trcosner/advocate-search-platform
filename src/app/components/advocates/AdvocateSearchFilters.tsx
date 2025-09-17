@@ -2,8 +2,10 @@
 
 import { useState, useCallback } from "react";
 import { AdvocateFilters, DegreeType } from "../../../types/advocate";
-import { inputStyles, cn, buttonStyles } from "../../../utils/styles";
+import { cn } from "../../../utils/styles";
 import CustomSelect from "../shared/form/CustomSelect";
+import Input from "../shared/form/Input";
+import Button from "../shared/Button";
 
 interface AdvocateSearchFiltersProps {
   initialFilters?: AdvocateFilters;
@@ -59,7 +61,7 @@ export default function AdvocateSearchFilters({
               Minimum Experience (years)
             </label>
             <div className="flex gap-2">
-              <input
+              <Input
                 type="number"
                 id="minExperience"
                 value={filters.minExperience ?? ""}
@@ -69,23 +71,20 @@ export default function AdvocateSearchFilters({
                 max="50"
                 disabled={disabled}
                 className={cn(
-                  inputStyles.base,
                   "px-3 py-2 text-sm flex-1",
                   disabled && "bg-neutral-50 opacity-50"
                 )}
               />
-              <button
+              <Button
                 onClick={handleClear}
                 disabled={disabled}
-                className={cn(
-                  buttonStyles.secondary,
-                  "px-4 py-2.5 text-sm font-medium whitespace-nowrap",
-                  disabled && "opacity-50 cursor-not-allowed"
-                )}
+                variant="secondary"
+                size="sm"
+                className="px-4 whitespace-nowrap"
                 aria-label="Clear filters"
               >
                 Clear
-              </button>
+              </Button>
             </div>
           </div>
         </div>

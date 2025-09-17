@@ -1,7 +1,8 @@
 "use client";
 
 import { AdvocateFilters, DegreeType } from "../../../../types/advocate";
-import { badgeStyles, cn } from "../../../../utils/styles";
+import { cn } from "../../../../utils/styles";
+import Badge from "../Badge";
 
 interface FilterTagsProps {
   filters: AdvocateFilters;
@@ -63,10 +64,10 @@ export default function FilterTags({
       </div>
       <div className="flex flex-wrap gap-2">
         {filterTags.map(({ key, label, value }) => (
-          <span
+          <Badge
             key={String(key)}
+            variant="primary"
             className={cn(
-              badgeStyles.primary,
               "inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium",
               "bg-gradient-to-r from-primary-50 to-primary-100",
               "border border-primary-200 hover:border-primary-300",
@@ -91,7 +92,7 @@ export default function FilterTags({
             >
               ×
             </button>
-          </span>
+          </Badge>
         ))}
       </div>
     </div>

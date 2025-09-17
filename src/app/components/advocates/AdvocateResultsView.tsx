@@ -4,8 +4,7 @@ import { Advocate } from "@/types/advocate";
 import AdvocateTable from "./AdvocateTable";
 import AdvocateCard from "./AdvocateCard";
 import AdvocateCardGrid from "./AdvocateCardGrid";
-import { AdvocateCardSkeletonGrid } from "./AdvocateCardSkeleton";
-import TableSkeleton from "../shared/table/TableSkeleton";
+import LoadingSpinner from "../shared/LoadingSpinner";
 
 interface AdvocateResultsViewProps {
   advocates: Advocate[];
@@ -25,23 +24,15 @@ export default function AdvocateResultsView({
   className = ""
 }: AdvocateResultsViewProps) {
   
-  // Show full skeleton only when loading with no existing data
+  // Show loading spinner when loading with no existing data
   if (loading && advocates.length === 0) {
     return (
       <div className={className}>
-        {/* Desktop Table Skeleton */}
-        <div className="hidden lg:block">
-          <TableSkeleton 
-            rows={8} 
-            columns={5} 
-            className="h-full"
-          />
-        </div>
-
-        {/* Mobile/Tablet Card Grid Skeleton */}
-        <div className="lg:hidden">
-          <AdvocateCardSkeletonGrid count={6} />
-        </div>
+        <LoadingSpinner 
+          size="lg" 
+          message="Loading advocates..." 
+          className="h-64"
+        />
       </div>
     );
   }
@@ -52,7 +43,7 @@ export default function AdvocateResultsView({
       {loading && advocates.length > 0 && (
         <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex items-center justify-center">
           <div className="flex items-center gap-3 bg-white rounded-lg px-4 py-2 shadow-lg border border-neutral-200">
-            <div className="animate-spin h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full"></div>
+            <LoadingSpinner size="sm" message="" />
             <span className="text-sm text-neutral-600">Updating results...</span>
           </div>
         </div>
