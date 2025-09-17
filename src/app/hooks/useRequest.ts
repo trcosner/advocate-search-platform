@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export interface RequestState<T> {
   data: T | null;
@@ -18,10 +18,16 @@ export function useRequest<T = any>(options: UseRequestOptions = {}) {
     error: null,
   });
 
+  // Use ref to prevent race conditions
+  const latestRequestRef = useRef<symbol>();
+
   const execute = useCallback(async (
     url: string,
     requestOptions: RequestInit = {}
   ): Promise<T | null> => {
+    const requestId = Symbol();
+    latestRequestRef.current = requestId;
+
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
@@ -33,29 +39,39 @@ export function useRequest<T = any>(options: UseRequestOptions = {}) {
         ...requestOptions,
       });
 
+      // Only proceed if this is still the latest request
+      if (latestRequestRef.current !== requestId) {
+        return null;
+      }
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const result = await response.json();
+      const data = result.data ?? result;
+      const success = result.success ?? true;
 
-      if (result.success) {
-        setState(prev => ({ ...prev, data: result.data, loading: false }));
-        options.onSuccess?.(result.data);
-        return result.data;
+      if (success) {
+        setState(prev => ({ ...prev, data, loading: false }));
+        options.onSuccess?.(data);
+        return data;
       } else {
-        throw new Error(result.error || 'Request failed');
+        throw new Error(result.error || result.message || 'Request failed');
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      setState(prev => ({ ...prev, error: errorMessage, loading: false }));
-      options.onError?.(errorMessage);
+      if (latestRequestRef.current === requestId) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        setState(prev => ({ ...prev, error: errorMessage, loading: false }));
+        options.onError?.(errorMessage);
+      }
       return null;
     }
   }, [options]);
 
   const reset = useCallback(() => {
     setState({ data: null, loading: false, error: null });
+    latestRequestRef.current = undefined;
   }, []);
 
   return {

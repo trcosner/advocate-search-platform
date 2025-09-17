@@ -1,10 +1,12 @@
 import { NextRequest } from "next/server";
-import { advocateService } from "../services/advocate";
+import { advocateService } from "../../../services/advocate";
 import { AdvocateSearchParams, AdvocateResponse, DegreeType } from "../../../types/api";
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest): Promise<Response> {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     
     const degreeParam = searchParams.get('degree');
     const degree = degreeParam && Object.values(DegreeType).includes(degreeParam as DegreeType) 
@@ -24,7 +26,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     };
 
     const result = await advocateService.search(searchRequest);
-
+    
     const response: AdvocateResponse = {
       success: true,
       data: result,

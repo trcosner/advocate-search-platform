@@ -1,8 +1,8 @@
 import { SQL, count, desc, asc } from "drizzle-orm";
 import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
-import db from "../../../db";
-import { SearchRequest } from "../../../types/search";
-import { PaginatedResult } from "../../../types/pagination";
+import db from "../db";
+import { SearchRequest } from "../types/search";
+import { PaginatedResult } from "../types/pagination";
 
 type TableWithColumns = PgTable & {
   [key: string]: PgColumn<any, any, any>;

@@ -1,14 +1,14 @@
 import { and, or, ilike, gte, lte, sql, asc, desc, eq } from "drizzle-orm";
 import { DatabaseService } from "./database";
-import { advocates } from "../../../db/schema";
-import { SearchRequest } from "../../../types/search";
-import { Advocate, AdvocateFilters } from "../../../types/advocate";
+import { advocates } from "../db/schema";
+import { SearchRequest } from "../types/search";
+import { Advocate, AdvocateFilters } from "../types/advocate";
 
 export class AdvocateService extends DatabaseService<Advocate, AdvocateFilters> {
   constructor() {
     super({
       table: advocates as any, // Type cast to work around Drizzle generic typing
-      defaultSortColumn: 'createdAt',
+      defaultSortColumn: 'yearsOfExperience',
       defaultLimit: 10,
       maxLimit: 100,
     });

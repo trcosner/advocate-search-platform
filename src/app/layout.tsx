@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Inter } from 'next/font/google'
+ 
+const inter = Inter({
+  subsets: ['latin'],
+})
+ 
 
 export const metadata: Metadata = {
   title: "Solace Candidate Assignment",
@@ -15,15 +18,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-          <main style={{ margin: "24px" }}>
-            <h1>Solace Advocates</h1>
-            <br />
-            <br />
-            {children}
+    <html lang="en" className={inter.className}>
+      <body className="font-sans h-full overflow-hidden">
+        <div className="h-screen flex flex-col bg-neutral-50">
+          <header className="flex-shrink-0 bg-white border-b border-neutral-200">
+              <h1 className="text-2xl font-bold text-primary-700 px-6 py-4">Solace</h1>
+          </header>
+          <main className="flex-1 overflow-hidden">
+            <div className="h-full max-w-7xl mx-auto px-6 py-6">
+              {children}
+            </div>
           </main>
-        </body>
+        </div>
+      </body>
     </html>
   );
 }
