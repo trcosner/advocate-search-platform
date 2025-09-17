@@ -67,7 +67,7 @@ export default function Pagination({
 
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className={`flex flex-col sm:flex-row sm:items-center gap-4 ${showInfo ? 'sm:justify-between' : 'sm:justify-center'}`}>
         {showInfo && (
           <PaginationInfo
             currentPage={currentPage}
@@ -78,7 +78,7 @@ export default function Pagination({
           />
         )}
 
-        <nav className="flex items-center justify-center sm:justify-end gap-1" aria-label="Pagination">
+        <nav className="flex items-center justify-center gap-1" aria-label="Pagination">
           <PaginationButton
             onClick={() => onPageChange(currentPage - 1)}
             disabled={!hasPrev || loading}

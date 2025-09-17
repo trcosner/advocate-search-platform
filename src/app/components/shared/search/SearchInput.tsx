@@ -82,11 +82,6 @@ export default function SearchInput({
           </button>
         )}
 
-        {loading && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            <div className="animate-spin h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full" />
-          </div>
-        )}
       </div>
 
       <Button
@@ -97,7 +92,7 @@ export default function SearchInput({
         className="whitespace-nowrap"
         aria-label="Search"
       >
-        {loading ? "Searching..." : "Search"}
+         Search
       </Button>
     </div>
   );

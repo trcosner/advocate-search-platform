@@ -11,7 +11,7 @@ export default function ChevronRightIcon({ className = "h-4 w-4", onClick }: Che
   return (
     <Image
       src="/icons/chevron-right.svg"
-      alt="Next"
+      alt=""
       width={16}
       height={16}
       className={className}

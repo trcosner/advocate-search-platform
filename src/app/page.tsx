@@ -1,61 +1,36 @@
+'use client';
+
+"use client";
+
 import React from "react";
-import { advocateService } from "../services/advocate";
+import { useSearchParams } from "next/navigation";
 import { AdvocateSearchParams, DegreeType } from "../types/api";
 import AdvocateSearchPage from "./components/advocates/AdvocateSearchPage";
 
-
-interface PageProps {
-  searchParams: {
-    page?: string;
-    limit?: string;
-    query?: string;
-    sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
-    degree?: string;
-    minExperience?: string;
-  };
-}
-
-async function getAdvocates(searchParams: AdvocateSearchParams) {
-  try {
-    return await advocateService.search(searchParams);
-  } catch (error) {
-    console.error('Error fetching advocates on server:', error);
-    throw error;
-  }
-}
-
-export default async function HomePage({ searchParams }: PageProps) {
-  const degreeParam = searchParams.degree;
+export default function HomePage() {
+  const searchParams = useSearchParams();
+  
+  const degreeParam = searchParams.get('degree');
   const degree = degreeParam 
     ? Object.values(DegreeType).find(d => d.toLowerCase() === degreeParam.toLowerCase()) 
     : undefined;
 
   // Parse search params for the API call - always set up search params even if empty
   const advocateSearchParams: AdvocateSearchParams = {
-    page: searchParams.page ? Number(searchParams.page) : undefined,
-    limit: searchParams.limit ? Number(searchParams.limit) : undefined,
-    query: searchParams.query || undefined,
-    sortBy: searchParams.sortBy || undefined,
-    sortOrder: searchParams.sortOrder || undefined,
+    page: searchParams.get('page') ? Number(searchParams.get('page')) : undefined,
+    limit: searchParams.get('limit') ? Number(searchParams.get('limit')) : undefined,
+    query: searchParams.get('query') || undefined,
+    sortBy: searchParams.get('sortBy') || undefined,
+    sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || undefined,
     filters: {
       degree,
-      minExperience: searchParams.minExperience ? Number(searchParams.minExperience) : undefined,
+      minExperience: searchParams.get('minExperience') ? Number(searchParams.get('minExperience')) : undefined,
     },
   };
-
-  // Always fetch data on the server - this provides initial results even with no search params
-  let initialData;
-  try {
-    initialData = await getAdvocates(advocateSearchParams);
-  } catch (error) {
-    console.error('Error loading initial data:', error);
-  }
 
   return (
     <div className="h-full flex flex-col">
       <AdvocateSearchPage 
-        initialData={initialData}
         initialSearchParams={advocateSearchParams}
       />
     </div>

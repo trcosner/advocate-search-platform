@@ -2,9 +2,10 @@
 
 import { ReactNode } from "react";
 import Pagination from "../pagination/Pagination";
+import LoadingSpinner from "../LoadingSpinner";
 
 interface SearchResultsProps<T = any> {
-  data: T[];
+  data: T[] | null;
   pagination?: {
     page: number;
     totalPages: number;
@@ -46,6 +47,19 @@ export default function SearchResults<T = any>({
 
   const shouldShowPagination = pagination && pagination.totalPages > 1 && onPageChange;
 
+  // Show loading spinner when loading OR when we have no data yet (initial load)
+  if (loading || !data) {
+    return (
+      <div className={`flex items-center justify-center py-12 ${className}`}>
+        <LoadingSpinner 
+          size="lg" 
+          message="Searching advocates..." 
+        />
+      </div>
+    );
+  }
+
+  // Show empty state only when not loading and we have searched but found no results
   if (data.length === 0) {
     return (
       <div className={`text-center py-8 ${className}`}>
@@ -60,7 +74,7 @@ export default function SearchResults<T = any>({
       </div>
     );
   }
-
+  console.log({className})
   return (
     <div className={`h-full flex flex-col ${className}`}>
       <div className={`flex-1 min-h-0 overflow-y-auto ${loading ? "opacity-75 pointer-events-none" : ""}`}>

@@ -21,12 +21,16 @@ export default function AdvocateSearchClient({
 }: AdvocateSearchClientProps) {
   const [localSearchTerm, setLocalSearchTerm] = useState(initialSearchParams.query || "")
   const { data, loading, error, searchParams, updateSearch } = useSearchAdvocates({
-    initialData,
     searchParams: initialSearchParams, // Pass search params to hook
   });
+  
+  // Don't fallback to empty array if data is null - let SearchResults handle the null case
   const currentData = data || initialData;
   const advocates = currentData?.data || [];
   const pagination = currentData?.pagination;
+  
+  // Pass null for data if we haven't searched yet, so SearchResults can show proper loading state
+  const dataForSearchResults = currentData ? advocates : null;
 
   const handleSearchChange = useCallback((value: string): void => {
     setLocalSearchTerm(value);
@@ -138,7 +142,7 @@ export default function AdvocateSearchClient({
 
       <div className="flex-1 min-h-0">
         <SearchResults
-          data={advocates}
+          data={dataForSearchResults}
           pagination={pagination}
           loading={loading}
           searchQuery={searchParams.query}

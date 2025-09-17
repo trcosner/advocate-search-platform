@@ -6,7 +6,6 @@ import ErrorFallback from "../shared/ErrorFallback";
 import { AdvocateSearchParams, PaginatedResult, Advocate } from "../../../types/api";
 
 interface AdvocateSearchPageProps {
-  initialData?: PaginatedResult<Advocate>;
   initialSearchParams: AdvocateSearchParams;
 }
 
@@ -29,13 +28,11 @@ function AdvocateErrorFallback({
 }
 
 export default function AdvocateSearchPage({
-  initialData,
   initialSearchParams
 }: AdvocateSearchPageProps) {
   return (
     <ErrorBoundary fallback={AdvocateErrorFallback}>
       <AdvocateSearchClient 
-        initialData={initialData}
         initialSearchParams={initialSearchParams}
       />
     </ErrorBoundary>

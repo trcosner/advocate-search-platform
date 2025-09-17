@@ -7,7 +7,6 @@ import { navigateWithSearchParams } from '../utils/navigation';
 import { mergeSearchParams } from '../utils/searchParams';
 
 export interface UseSearchAdvocatesOptions {
-  initialData?: PaginatedResult<Advocate>;
   searchParams: AdvocateSearchParams;
   endpoint?: string; // Allow different endpoints - Open/Closed Principle
 }
@@ -50,18 +49,13 @@ export function useSearchAdvocates(options: UseSearchAdvocatesOptions) {
     searchAdvocates(updatedParams);
   }, [currentSearchParams, router, searchAdvocates]);
 
-  // Only search initially with the provided data
+  // Always fetch data on mount and when search params change
   useEffect(() => {
-    if (options.initialData) {
-      // We already have initial data, no need to fetch
-      return;
-    }
-    // Only fetch if we don't have initial data
-    searchAdvocates(options.searchParams);
-  }, []); // Only run once on mount
+    searchAdvocates(currentSearchParams);
+  }, []); // Only run once on mount with initial search params
 
   return {
-    data: data || options.initialData || null,
+    data: data || null,
     loading,
     error,
     searchParams: currentSearchParams,
